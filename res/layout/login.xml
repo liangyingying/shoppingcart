@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:id="@+id/login_username_text"
+            android:layout_margin="20sp"
+            android:text="用户名"/>
+
+		<EditText
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/login_username_edittext" 
+	        android:layout_toRightOf="@id/login_username_text"
+	        android:inputType="text"/>
+	
+    
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_password_text"
+            android:layout_alignLeft="@id/login_username_text"
+            android:layout_below="@id/login_username_text"
+            
+            android:text="密码" />
+
+		<EditText
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignLeft="@id/login_username_edittext"
+            android:layout_toRightOf="@id/login_password_text"
+            android:layout_below="@id/login_username_edittext"
+		    android:id="@+id/login_password_edittext" 
+		    android:inputType="textPassword"/>
+	</RelativeLayout>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+	    <CheckBox
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="下次自动登录" />
+
+	</LinearLayout>
+
+	<Button
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/login_button"
+	    android:text="login"
+	    android:background="#006030">
+
+	</Button>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:layout_weight="1"
+		    android:id="@+id/qq_login_button"
+		    android:text="QQ Login"/>
+
+		<Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1" 
+		    android:id="@+id/zfb_login_button"
+		    android:text="支付宝 Login"/>
+
+	</LinearLayout>
+</LinearLayout>
