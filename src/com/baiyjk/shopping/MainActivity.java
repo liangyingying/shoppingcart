@@ -77,7 +77,7 @@ public class MainActivity extends ActivityGroup{
 					((View)titlebar.getParent()).setVisibility(View.VISIBLE);
 					container.addView(manager.startActivity(
 							"PAGE_3", 
-							new Intent(context, AccountActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+							new Intent(context, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 							.getDecorView());
 					
 					titlebar.setText("我的账户");

@@ -37,7 +37,7 @@
             <!--  android:windowSoftInputMode = "adjustPan"> -->
         </activity>
         <activity
-            android:name="com.baiyjk.shopping.AccountActivity"
+            android:name="com.baiyjk.shopping.LoginActivity"
             android:label="@string/account_name" >   
         </activity>
         <activity

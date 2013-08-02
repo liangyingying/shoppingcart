@@ -20,6 +20,7 @@
 	        android:layout_height="wrap_content" 
 	        android:id="@+id/login_username_edittext" 
 	        android:layout_toRightOf="@id/login_username_text"
+	        android:maxLength="40"
 	        android:inputType="text"/>
 	
     
@@ -49,7 +50,8 @@
 
 	    <CheckBox
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/login_auto"/>
 
 	    <TextView
 	        android:layout_width="wrap_content"
