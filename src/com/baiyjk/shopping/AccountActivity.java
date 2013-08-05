@@ -19,8 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -61,19 +63,16 @@ public class AccountActivity extends Activity {
 //		accountOrderView = findViewById(R.layout.order_item);
 		mybaiyang = (LinearLayout)findViewById(R.id.mybaiyang);
 		
-		new Thread(new Runnable() {
-			
-			
+		new Thread(new Runnable() {			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				// TODO 一次返回了所有的订单，还需改进
 				String url = "/mybaiyang.do?format=true";
 				mResponse = HttpFactory.getHttp().getUrlContext(url, mContext);
 				runOnUiThread(new Runnable() {                    
                    
 					@Override  
                     public void run() {
-						Log.d("我的百洋", mResponse);
 						try {
 							JSONObject jsonObject = new JSONObject(mResponse);
 							usernameTextView.setText(jsonObject.getString("username") + "  等级：" 
@@ -95,8 +94,11 @@ public class AccountActivity extends Activity {
 								TextView orderPayTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_pay));
 								TextView orderTimeTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_time));
 								Button orderButton = (Button)(accountOrderView.findViewById(R.id.account_order_button));
-								ViewPager viewPager = (ViewPager)accountOrderView.findViewById(R.id.account_product_images_viewpager);
-								
+								LinearLayout imagesContainer = (LinearLayout)accountOrderView.findViewById(R.id.account_product_images_container);
+//								HorizontalScrollView scrollView = (HorizontalScrollView)accountOrderView.findViewById(R.id.account_product_images_scrollview);
+//								scrollView.setHorizontalScrollBarEnabled(false);
+									
+								//orderSize 值不对。需要修改。
 								orderIdTextView.setText("订单号：" + orderObject.getString("orderId"));
 								orderSizeTextView.setText("共" + orderObject.getString("orderSize") + "件");
 								orderStatusTextView.setText(orderObject.getString("orderStatus"));
@@ -107,7 +109,7 @@ public class AccountActivity extends Activity {
 									orderButton.setText("去支付");
 									orderButton.setTag(orderObject.getString("orderId"));
 								}else if (orderObject.getString("previewLink").equals("YES")) {
-									orderButton.setText(orderObject.getString("去评价"));
+									orderButton.setText("去评价");
 									orderButton.setTag(orderObject.getString("orderId"));
 								}else {
 									orderButton.setVisibility(View.GONE);
@@ -118,17 +120,11 @@ public class AccountActivity extends Activity {
 								ArrayList<String> allImagesUrl = new ArrayList<String>();
 								for (int j = 0; j < allImages.length(); j++) {
 									allImagesUrl.add(allImages.get(j).toString());
-									ImageView iv = new ImageView(mContext); 								
-//									iv.setBackgroundResource(R.drawable.y);
+									ImageView iv = new ImageView(mContext);
 									imageLoader.DisplayImage(allImages.get(j).toString(), iv);
-									viewPager.addView(iv);
+									imagesContainer.addView(iv);
 								}
-								//将图片URL转换成对应的ImageView  
-//						        mViewPagerAdapter = new ProductDetaiViewPagerAdapter(mContext, allImagesUrl);  
-//						        viewPager.setAdapter(mViewPagerAdapter);
-								
 				        			
-								
 								mybaiyang.addView(accountOrderView);
 								
 							}

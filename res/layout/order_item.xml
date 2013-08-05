@@ -32,21 +32,36 @@
         android:id="@+id/account_order_status"/>
     
     <!-- 商品图片 -->
-    <android.support.v4.view.ViewPager
+    <HorizontalScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"       
+        android:layout_below="@id/account_order_id"
+        android:id="@+id/account_product_images_scrollview"
+        android:scrollbars="none">
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:id="@+id/account_product_images_container"
+        		android:orientation="horizontal">
+            
+        </LinearLayout>
+    </HorizontalScrollView>
+    <!-- <android.support.v4.view.ViewPager
 	        android:id="@+id/account_product_images_viewpager"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:layout_below="@id/account_order_id">
 	        
-	</android.support.v4.view.ViewPager>
+	</android.support.v4.view.ViewPager> -->
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="总额：" 
         android:id="@+id/account_order_value_text"
-        android:layout_below="@id/account_product_images_viewpager"/>
+        android:layout_below="@id/account_product_images_scrollview"/>
     
     <!-- 总计 -->
     <TextView

@@ -38,10 +38,10 @@ import android.util.Log;
 public class HttpClientUtil implements HttpApi {
 	private static final String DEBUG_TAG = "HttpClientUtils";
 	private static final String CHARSET_UTF8 = "UTF-8";
-	private final String host = "http://www.bytest.com";
-	public final String PHPSESSIONKEY = "BAIYANG";
-//	private final String host = "http://www.baiyjk.com";
-//	public final String PHPSESSIONKEY = "baiyang";//正式环境
+//	private final String host = "http://www.bytest.com";
+//	public final String PHPSESSIONKEY = "BAIYANG";
+	private final String host = "http://www.baiyjk.com";
+	public final String PHPSESSIONKEY = "baiyang";//正式环境
 	public static String BAIYANG = null;
 	public final String PHPSESSIONID = "PHPSESSIONID";
 
