@@ -50,6 +50,9 @@
         <activity
             android:name="com.baiyjk.shopping.ProductDetailActivity">
         </activity>
+        <activity
+            android:name="com.baiyjk.shopping.AccountActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>  

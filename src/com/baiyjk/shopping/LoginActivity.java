@@ -105,20 +105,23 @@ public class LoginActivity extends Activity {
 									editor.putString("password", password);
 									editor.commit();
 								}
+								Intent intent = new Intent(context, AccountActivity.class);
+								context.startActivity(intent);
+								
 							}else {
 								usernameEditText.setError("用户名错误");
 								passwordEditText.setError("密码错误");
 							}
 						}
 					}).start();
-					// Intent intent = new Intent();
-					// Bundle bundle = new Bundle();
-					//
-					// bundle.putString("username", username);
-					// bundle.putString("password", password);
-					// bundle.putBoolean("chkRememberUsername", isRemember);
-					// intent.putExtras(bundle);
-					// intent.setClassName(context, "");
+//					 Intent intent = new Intent();
+//					 Bundle bundle = new Bundle();
+//					
+//					 bundle.putString("username", username);
+//					 bundle.putString("password", password);
+//					 bundle.putBoolean("chkRememberUsername", isRemember);
+//					 intent.putExtras(bundle);
+//					 intent.setClassName(context, "");
 				}
 
 			}

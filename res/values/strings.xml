@@ -21,4 +21,9 @@
     <string name="back">back</string>
     
     <string name="add_to_cart">cart</string>
+    
+    <string name="address">收货地址</string>
+    <string name="wish">收藏</string>
+    <string name="coupon">优惠券</string>
+    <string name="myorders">我的订单</string>
 </resources>

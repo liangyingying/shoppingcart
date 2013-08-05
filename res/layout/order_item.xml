@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- 订单号 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_id"
+        android:text="订单号：10000000"
+        android:layout_alignParentLeft="true"/>
+    
+    <!-- 订单商品个数 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_size"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/account_order_id"
+        android:textSize="12sp"
+        android:text=""
+        android:layout_gravity="center_vertical"
+        android:textColor="#B0B0B0"/>
+    
+    <!-- 订单状态 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_alignParentRight="true"
+        android:id="@+id/account_order_status"/>
+    
+    <!-- 商品图片 -->
+    <android.support.v4.view.ViewPager
+	        android:id="@+id/account_product_images_viewpager"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_below="@id/account_order_id">
+	        
+	</android.support.v4.view.ViewPager>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="总额：" 
+        android:id="@+id/account_order_value_text"
+        android:layout_below="@id/account_product_images_viewpager"/>
+    
+    <!-- 总计 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_value"
+        android:layout_alignTop="@id/account_order_value_text"
+        android:layout_toRightOf="@id/account_order_value_text"
+        android:text="$49"
+        android:textColor="#FF0000"/>
+    
+    <!-- 支付方式 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_pay"
+        android:text="货到付款"
+        android:layout_toRightOf="@id/account_order_value"
+        android:layout_alignTop="@id/account_order_value_text"/>
+    
+    <!-- 订单时间 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_order_time" 
+        android:layout_below="@id/account_order_value_text"
+        android:text="时间："/>
+    
+    <!-- 操作按钮 -->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/account_order_time"
+        android:text="去支付"
+        android:background="#008000"/>
+
+</RelativeLayout>

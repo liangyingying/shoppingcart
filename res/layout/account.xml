@@ -1,11 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:id="@+id/ScrollView" 
+    android:layout_width="fill_parent"  
+    android:layout_height="wrap_content" 
+    android:scrollbars="vertical"> 
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mybaiyang"
     android:orientation="vertical" >
-    <TextView
+    <RelativeLayout 
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:text="This is my account!!"/>
+        android:layout_height="50dp">
+        <!-- 花儿、果儿等级头像 -->
+        <ImageView 
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/account_image"
+            android:src="@drawable/y"
+            android:layout_marginRight="10dp"/>
+        <!-- 用户名 & 等级 -->
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/account_image"
+            android:id="@+id/account_name_grade"
+            android:text="username"/>
+        <!-- 用户积分 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_toRightOf="@id/account_image"
+            android:layout_alignLeft="@id/account_name_grade"
+            android:layout_alignBottom="@id/account_image"
+            android:layout_marginRight="10dp"
+            android:id="@+id/account_point"
+            android:text="积分50"/>
+		<!-- 用户余额 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_toRightOf="@id/account_point"
+            android:layout_alignBottom="@id/account_image"
+            android:id="@+id/account_money"
+            android:text="余额100"/>
+        
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical">
+		<RadioGroup  
+	         android:id="@+id/account_tab_group"  
+	         android:layout_width="fill_parent"  
+	         android:layout_height="wrap_content"  
+	         android:gravity="center"  
+	         android:paddingTop="6dp"  
+	         android:paddingBottom="6dp" 
+	         android:orientation="horizontal">  
+	
+	         <RadioButton
+	             android:id="@+id/account_tab_wish"
+	             android:layout_height="match_parent"
+	             android:layout_weight="1"
+	             android:button="@null"
+	             android:checked="true"
+	             android:drawableTop="@drawable/y"
+	             android:gravity="center"
+	             android:text="@string/wish"
+	             android:textSize="14sp" />
+	
+	         <RadioButton  
+	             android:id="@+id/account_tab_address"
+	             android:text="@string/address" 
+	             android:drawableTop="@drawable/y"
+	             android:gravity="center"
+	             android:layout_weight="1"
+	             android:textSize="14sp"
+	             android:button="@null"/>  
+	
+	         <RadioButton  
+	             android:id="@+id/account_tab_coupon" 
+	             android:text="@string/coupon" 
+	             android:drawableTop="@drawable/y"
+	             android:gravity="center"
+	             android:layout_weight="1"
+	             android:textSize="14sp"
+	             android:button="@null"/>
+	     </RadioGroup>
+            
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" 
+		    android:orientation="horizontal">
+
+			<ImageView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_margin="6dp"
+			    android:src="@drawable/home_selected" />
+
+			<TextView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content" 
+			    android:text="@string/myorders"
+			    android:layout_gravity="center_vertical"/>
+
+		</LinearLayout>
+	</LinearLayout>
+	
+    
 </LinearLayout>
+</ScrollView>
