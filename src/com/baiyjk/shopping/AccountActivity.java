@@ -38,7 +38,7 @@ public class AccountActivity extends Activity {
 	private View accountOrderView;
 	private LinearLayout mybaiyang;
 	private LayoutInflater mLayoutinflater;
-	private ViewPager mViewPager;
+//	private ViewPager mViewPager;
 	private ProductDetaiViewPagerAdapter mViewPagerAdapter;
 
 	@Override
@@ -86,7 +86,7 @@ public class AccountActivity extends Activity {
 							for (int i = 0; i < jsonArray.length(); i++) {
 								JSONObject orderObject = new JSONObject(jsonArray.get(i).toString());
 								View accountOrderView = mLayoutinflater.inflate(R.layout.order_item, null);
-								mViewPager = (ViewPager)accountOrderView.findViewById(R.id.account_product_images_viewpager);
+								
 								
 								TextView orderIdTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_id));
 								TextView orderSizeTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_size));
@@ -95,6 +95,7 @@ public class AccountActivity extends Activity {
 								TextView orderPayTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_pay));
 								TextView orderTimeTextView = (TextView)(accountOrderView.findViewById(R.id.account_order_time));
 								Button orderButton = (Button)(accountOrderView.findViewById(R.id.account_order_button));
+								ViewPager viewPager = (ViewPager)accountOrderView.findViewById(R.id.account_product_images_viewpager);
 								
 								orderIdTextView.setText("订单号：" + orderObject.getString("orderId"));
 								orderSizeTextView.setText("共" + orderObject.getString("orderSize") + "件");
@@ -117,14 +118,14 @@ public class AccountActivity extends Activity {
 								ArrayList<String> allImagesUrl = new ArrayList<String>();
 								for (int j = 0; j < allImages.length(); j++) {
 									allImagesUrl.add(allImages.get(j).toString());
-//									ImageView iv = new ImageView(mContext); 
-//									imageLoader.DisplayImage(allImages.get(j).toString(), iv);
-//									mViewPager.addView(iv);
+									ImageView iv = new ImageView(mContext); 								
+//									iv.setBackgroundResource(R.drawable.y);
+									imageLoader.DisplayImage(allImages.get(j).toString(), iv);
+									viewPager.addView(iv);
 								}
-								
 								//将图片URL转换成对应的ImageView  
-						        mViewPagerAdapter = new ProductDetaiViewPagerAdapter(mContext, allImagesUrl);  
-						        mViewPager.setAdapter(mViewPagerAdapter);
+//						        mViewPagerAdapter = new ProductDetaiViewPagerAdapter(mContext, allImagesUrl);  
+//						        viewPager.setAdapter(mViewPagerAdapter);
 								
 				        			
 								
