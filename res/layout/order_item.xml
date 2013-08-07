@@ -2,15 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:gravity="right"
     android:orientation="vertical" >
     
     <!-- 订单号 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:id="@+id/account_order_id"
-        android:text="订单号：10000000"
+        android:id="@+id/account_order_id_text"
+        android:text="订单号："
         android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/account_order_id"
+        android:text=""
+        android:layout_toRightOf="@id/account_order_id_text"/>
     
     <!-- 订单商品个数 -->
     <TextView
@@ -78,7 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:id="@+id/account_order_pay"
-        android:text="货到付款"
+        android:layout_marginLeft="10dp"
+        android:text=""
         android:layout_toRightOf="@id/account_order_value"
         android:layout_alignTop="@id/account_order_value_text"/>
     

@@ -46,21 +46,19 @@ public class LoginActivity extends Activity {
 	}
 
 	private void initView() {
-		sp = this.getSharedPreferences("baiyjk_user", Context.MODE_PRIVATE); 
+		sp = this.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE); 
 		loginButton = (Button) findViewById(R.id.login_button);
 		usernameEditText = (EditText) findViewById(R.id.login_username_edittext);
 		passwordEditText = (EditText) findViewById(R.id.login_password_edittext);
 		autoLoginCheckBox = (CheckBox) findViewById(R.id.login_auto);
 
-		//根据sp保存的数据设置自动登录
+//		根据sp保存的数据设置自动登录
 //		http://blog.csdn.net/liuyiming_/article/details/7704923
 		if (sp.getBoolean("auto_login", false)) {
 			
 			autoLoginCheckBox.setChecked(true);
 			usernameEditText.setText(sp.getString("username", ""));
 			passwordEditText.setText(sp.getString("password", ""));
-			//TODO 此处执行登录操作
-			
 		}
 		
 		//监听自动登录复选框事件
@@ -114,14 +112,6 @@ public class LoginActivity extends Activity {
 							}
 						}
 					}).start();
-//					 Intent intent = new Intent();
-//					 Bundle bundle = new Bundle();
-//					
-//					 bundle.putString("username", username);
-//					 bundle.putString("password", password);
-//					 bundle.putBoolean("chkRememberUsername", isRemember);
-//					 intent.putExtras(bundle);
-//					 intent.setClassName(context, "");
 				}
 
 			}

@@ -26,4 +26,6 @@
     <string name="wish">收藏</string>
     <string name="coupon">优惠券</string>
     <string name="myorders">我的订单</string>
+    <string name="order_detail">订单详情</string>
+    <string name="go_to_comment">去评价</string>
 </resources>

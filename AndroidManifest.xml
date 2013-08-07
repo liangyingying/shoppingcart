@@ -44,15 +44,10 @@
             android:name="com.baiyjk.shopping.CategoryActivity"
             android:label="@string/category_name" >   
         </activity>
-        <activity
-            android:name="com.baiyjk.shopping.ProductsListActivity">
-        </activity>
-        <activity
-            android:name="com.baiyjk.shopping.ProductDetailActivity">
-        </activity>
-        <activity
-            android:name="com.baiyjk.shopping.AccountActivity">
-        </activity>
+        <activity android:name="com.baiyjk.shopping.ProductsListActivity"></activity>
+        <activity android:name="com.baiyjk.shopping.ProductDetailActivity"></activity>
+        <activity android:name="com.baiyjk.shopping.AccountActivity"></activity>
+        <activity android:name="com.baiyjk.shopping.OrderActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>  

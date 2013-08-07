@@ -1,10 +1,12 @@
 package com.baiyjk.shopping;
 
 import android.R.integer;
+import android.app.Activity;
 import android.app.ActivityGroup;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ public class MainActivity extends ActivityGroup{
 	private LinearLayout container;
 	private Context context;
 	private TextView titlebar;
+	private SharedPreferences sp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -75,9 +78,16 @@ public class MainActivity extends ActivityGroup{
 
 					titlebar = (TextView)findViewById(R.id.titlebar);
 					((View)titlebar.getParent()).setVisibility(View.VISIBLE);
+					
+					sp = context.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE);
+					Class redirectClass = LoginActivity.class;
+					if (sp.getString("PHPSESSIONID", "").length() > 0) {
+						redirectClass = AccountActivity.class;
+					}
+					
 					container.addView(manager.startActivity(
 							"PAGE_3", 
-							new Intent(context, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+							new Intent(context, redirectClass).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 							.getDecorView());
 					
 					titlebar.setText("我的账户");

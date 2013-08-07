@@ -38,12 +38,12 @@ import android.util.Log;
 public class HttpClientUtil implements HttpApi {
 	private static final String DEBUG_TAG = "HttpClientUtils";
 	private static final String CHARSET_UTF8 = "UTF-8";
-//	private final String host = "http://www.bytest.com";
-//	public final String PHPSESSIONKEY = "BAIYANG";
-	private final String host = "http://www.baiyjk.com";
-	public final String PHPSESSIONKEY = "baiyang";//正式环境
-	public static String BAIYANG = null;
-	public final String PHPSESSIONID = "PHPSESSIONID";
+	private final String host = "http://www.bytest.com";
+	public final String PHPSESSIONKEY = "BAIYANG";
+//	private final String host = "http://www.baiyjk.com";
+//	public final String PHPSESSIONKEY = "baiyang";//正式环境
+//	public static String BAIYANG = null;
+	public String PHPSESSIONID;
 
 	private HttpClientUtil() {
 	} // 单例模式中，封闭创建实例接口
@@ -73,14 +73,14 @@ public class HttpClientUtil implements HttpApi {
 			strUrl = urlEncode(strUrl.trim(), CHARSET_UTF8);
 			httpClient = getDefaultHttpClient(null);
 			httpGet = new HttpGet(strUrl);
-			SharedPreferences pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
+			SharedPreferences pref = context.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE); // 0 - for private mode
 																				
 			Editor editor = pref.edit();
-			BAIYANG = pref.getString(PHPSESSIONID, "");
-			Log.d(PHPSESSIONID, BAIYANG);
-			if (null != BAIYANG) {
-//				httpGet.setHeader("Cookie", "BAIYANG=" + BAIYANG);
-				httpGet.setHeader("Cookie", PHPSESSIONKEY + "=" + BAIYANG);
+			PHPSESSIONID = pref.getString(PHPSESSIONKEY, "");
+			
+			if (null != PHPSESSIONID) {
+				httpGet.setHeader("Cookie", PHPSESSIONKEY + "=" + PHPSESSIONID);
+				Log.d("pref中保存的Id，request中的cookie " + PHPSESSIONKEY, PHPSESSIONID);
 			}
 			responseStr = httpClient.execute(httpGet, strResponseHandler);
 			CookieStore mCookieStore = httpClient.getCookieStore();
@@ -88,16 +88,16 @@ public class HttpClientUtil implements HttpApi {
 
 			for (int i = 0; i < cookies.size(); i++) {
 				// 这里是读取Cookie['PHPSESSID']的值存在静态变量中，保证每次都是同一个值
-				// 保存到sharedPreference最好，不管什么时候都是取到同一个值()
-				Log.d("cookie", cookies.get(i).getName() + ":"
-						+ cookies.get(i).getValue());
+				// or 保存到sharedPreference最好，不管什么时候都是取到同一个值()
+				
 				if (PHPSESSIONKEY.equals(cookies.get(i).getName())) {
-					// BAIYANG = cookies.get(i).getValue();
+					Log.d("response 中包含的cookie", cookies.get(i).getName() + ":"
+							+ cookies.get(i).getValue());
 					String newSessionId = cookies.get(i).getValue();
 					
-					if (!BAIYANG.equals(newSessionId)) {
-						editor.putString(PHPSESSIONID, newSessionId);
-						BAIYANG = newSessionId;
+					if (!PHPSESSIONID.equals(newSessionId)) {
+						editor.putString(PHPSESSIONKEY, newSessionId);
+						PHPSESSIONID = newSessionId;
 						editor.commit();
 					}
 
