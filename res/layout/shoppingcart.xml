@@ -72,7 +72,17 @@
             android:layout_height="wrap_content"
             android:text=""
             android:id="@+id/cart_value"
-            android:layout_alignParentRight="true"/>
+            android:layout_toRightOf="@id/cart_size"/>
+        
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="去结算"
+            android:id="@+id/cart_checkout_button"
+            android:layout_alignParentRight="true"
+            android:background="#FF0000">
+            
+        </Button>
         
     </RelativeLayout>
     
@@ -99,14 +109,4 @@
 	
 		</ListView>
 	</RelativeLayout>
-    <!-- 结算按钮 -->
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="去结算"
-        android:textSize="14sp" 
-        android:id="@+id/cart_checkout"
-        android:background="#FF0000">
-
-	</Button>
 </LinearLayout>

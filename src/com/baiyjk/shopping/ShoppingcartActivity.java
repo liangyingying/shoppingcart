@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,7 @@ import com.baiyjk.shopping.http.HttpFactory;
 
 public class ShoppingcartActivity extends ListActivity {
 
-	private Context context;
+	private Context mContext;
 	private String cartJson;
 	private TextView mTv;
 	private Button backButton;
@@ -56,7 +57,7 @@ public class ShoppingcartActivity extends ListActivity {
 	}
 
 	private void initView() {
-		context = this;
+		mContext = this;
 		mTv = (TextView) findViewById(R.id.cart_list_loading);
 		backButton = (Button) findViewById(R.id.cart_back);
 		editButton = (Button) findViewById(R.id.cart_edit);
@@ -65,7 +66,7 @@ public class ShoppingcartActivity extends ListActivity {
 		clearButton = (Button) findViewById(R.id.cart_clear);
 		cartSizeTv = (TextView) findViewById(R.id.cart_size);
 		cartValueTv = (TextView) findViewById(R.id.cart_value);
-		checkoutButton = (View) findViewById(R.id.cart_checkout);
+		checkoutButton = (View) findViewById(R.id.cart_checkout_button);
 
 		//后退按钮
 		backButton.setOnClickListener(new OnClickListener() {			
@@ -79,7 +80,13 @@ public class ShoppingcartActivity extends ListActivity {
 		checkoutButton.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "去结算", Toast.LENGTH_SHORT).show();
+				Log.d("购物车", "去结算");
+				//PC中依次检查各商品的最大购买数量/ajax/checkProNum.do；是否登录/ajax/isUserLogin.do
+				
+				//TODO 考虑重复提交请求的问题
+				String url = "/showOrder.do?format=true&ordersign=0&orderId=";
+				CheckoutTask task = new CheckoutTask();
+				task.execute(url);
 			}
 		});
 		
@@ -88,7 +95,7 @@ public class ShoppingcartActivity extends ListActivity {
 			@Override
 			public void run() {
 				cartJson = HttpFactory.getHttp().getUrlContext(
-						"/showCart.do/?format=true", context);
+						"/showCart.do/?format=true", mContext);
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -96,7 +103,7 @@ public class ShoppingcartActivity extends ListActivity {
 							mTv.setVisibility(View.GONE);
 							Log.d(TAG, cartJson);
 							adapter = new CartListSimpleAdapter(
-									context, getData(),
+									mContext, getData(),
 									R.layout.shoppingcart_item, new String[] {"productId", "url", "name", "qty", "price","image" }, 
 										new int[] {
 											R.id.cart_product_id,
@@ -203,6 +210,22 @@ public class ShoppingcartActivity extends ListActivity {
 		}
 
 		return list;
+	}
+	
+	class CheckoutTask extends AsyncTask<String, Integer, Boolean>{
+
+		private String response;
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// TODO 网络请求
+			response = HttpFactory.getHttp().getUrlContext(params[0], mContext);
+			if (response.length() > 0) {
+				return true;
+			}
+			return false;
+		}
+		
 	}
 	
 }
