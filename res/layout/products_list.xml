@@ -12,17 +12,14 @@
         android:layout_height="50dp"
         android:background="#2F7D6D" >
 
-        <Button
+		<ImageView
+		    android:id="@+id/product_list_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/back"
-            android:id="@+id/product_list_back"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true" >
-            
-        </Button>            
+		    android:layout_marginLeft="8dp"
+		    android:layout_centerVertical="true"
+		    android:src="@drawable/back" />
+        		          
         <TextView
             android:id="@+id/product_list_titlebar" 
             android:layout_width="wrap_content" 
@@ -32,16 +29,16 @@
             android:text="@string/app_name"
             android:textColor="#FFFFFFFF"
             
-            android:textSize="24sp" /> 
-
-        <Button
+            android:textSize="24sp" />
+        
+		<ImageView
+		    android:id="@+id/product_list_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:id="@+id/product_list_filter"
-            android:background="@drawable/shoppingcart"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp" />
+		    android:layout_alignParentRight="true"
+		    android:layout_marginRight="8dp"
+		    android:layout_centerVertical="true"
+		    android:src="@drawable/shoppingcart" />
 
 	</RelativeLayout>
 

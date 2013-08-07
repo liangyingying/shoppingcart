@@ -1,0 +1,1 @@
+关于json_encode出来空对象 http://stackoverflow.com/questions/2258133/json-encode-on-class-with-magic-properties

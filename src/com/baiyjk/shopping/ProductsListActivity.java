@@ -26,8 +26,8 @@ public class ProductsListActivity extends ListActivity{
 	private final String TAG = "products_list";
 	private String productsJsonString;
 	private Map<String, Object> map;
-	private Button backButton;
-	private Button filterButton;
+	private View mBack;
+	private View mFilterButton;
 	
 	
 	@Override
@@ -40,11 +40,11 @@ public class ProductsListActivity extends ListActivity{
 	
 	private void initView(){
 		mTv = (TextView)findViewById(R.id.productlistloading);
-		backButton = (Button) findViewById(R.id.product_list_back);
-		filterButton = (Button)findViewById(R.id.product_list_filter);
+		mBack = findViewById(R.id.product_list_back);
+		mFilterButton = findViewById(R.id.product_list_filter);
 		
 		//后退按钮
-		backButton.setOnClickListener(new OnClickListener() {			
+		mBack.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				finish();
