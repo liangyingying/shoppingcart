@@ -48,6 +48,7 @@
         <activity android:name="com.baiyjk.shopping.ProductDetailActivity"></activity>
         <activity android:name="com.baiyjk.shopping.AccountActivity"></activity>
         <activity android:name="com.baiyjk.shopping.OrderActivity"></activity>
+        <activity android:name="com.baiyjk.shopping.OrderConfirmActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>  
