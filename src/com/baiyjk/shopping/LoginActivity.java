@@ -35,12 +35,14 @@ public class LoginActivity extends Activity {
 	int autoLogin;
 	private SharedPreferences sp;
 	private CheckBox autoLoginCheckBox;
+	private String mToActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
+		Intent intent = getIntent();
+		mToActivity = intent.getStringExtra("toActivity");
 		context = this;
 		initView();
 	}
@@ -103,7 +105,18 @@ public class LoginActivity extends Activity {
 									editor.putString("password", password);
 									editor.commit();
 								}
-								Intent intent = new Intent(context, AccountActivity.class);
+								//登录成功。跳转到目标Activity。默认是我的百洋。
+								Class c = AccountActivity.class;
+								if (mToActivity != null) {
+									try {
+										Log.d("目标activity = ", mToActivity);
+										c = Class.forName(mToActivity);
+									} catch (ClassNotFoundException e) {
+										e.printStackTrace();
+									}
+								}
+								Log.d("登录操作", "成功，跳转至"+c.toString());
+								Intent intent = new Intent(context, c);
 								context.startActivity(intent);
 								
 							}else {

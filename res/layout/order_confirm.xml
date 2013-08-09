@@ -1,13 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-    </LinearLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     
+	<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#2F7D6D" >
+             
+        <TextView
+            android:id="@+id/order_confirm_titlebar" 
+            android:layout_width="wrap_content" 
+            android:layout_height="40dip" 
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#FFFFFFFF"
+            android:text="确认订单"
+            android:textSize="24sp"/> 
 
-</ScrollView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/order_confirm_cancel_button"
+            android:text="取消" />
+        
+	</RelativeLayout>
+	<ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	        
+	        <!-- 收货信息,如果没有默认值的展示暂无 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:orientation="vertical"
+	            android:id="@+id/order_confirm_receiver"
+	            android:layout_margin="16dp">
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_receiver_name"
+	                />
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_receiver_phone"
+	                />
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_receiver_address"
+	                />
+	            
+	        </LinearLayout>
+	        
+	        <!-- 支付方式 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:orientation="vertical"
+	            android:layout_margin="16dp">
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:text="支付方式"/>
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_paymethod"/>
+	        </LinearLayout>
+	        
+	        <!-- 配送方式 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:orientation="vertical"
+	            android:layout_margin="16dp">
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:text="配送方式"/>
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_shipping"/>	                
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_shipping_time"/>
+	        </LinearLayout>
+	        
+	        <!-- 发票信息 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_margin="16dp">
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="发票信息"/>
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:id="@+id/order_confirm_invoice"/>
+	        </LinearLayout>
+	        
+	        <!-- 商品清单 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_margin="16dp"
+	            android:id="@+id/order_confirm_product_container">
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="商品清单"/>
+	        </LinearLayout>
+	        
+	        <!-- 订单总计 -->
+	    </LinearLayout>	
+	</ScrollView>
+</LinearLayout>

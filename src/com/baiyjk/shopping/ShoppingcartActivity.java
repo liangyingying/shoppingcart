@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.baiyjk.shopping.adapter.CartListSimpleAdapter;
 import com.baiyjk.shopping.http.HttpFactory;
+import com.baiyjk.shopping.utils.PatchByLoginStatus;
 
 public class ShoppingcartActivity extends ListActivity {
 
@@ -81,12 +83,14 @@ public class ShoppingcartActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				Log.d("购物车", "去结算");
-				//PC中依次检查各商品的最大购买数量/ajax/checkProNum.do；是否登录/ajax/isUserLogin.do
+				//PC中依次检查各商品的最大购买数量/ajax/checkProNum.do；
 				
 				//TODO 考虑重复提交请求的问题
-				String url = "/showOrder.do?format=true&ordersign=0&orderId=";
-				CheckoutTask task = new CheckoutTask();
-				task.execute(url);
+				//如果已登录，跳转到OrderConfirmActivity
+				//如果没登录，跳转到LoginActivity
+
+				PatchByLoginStatus patchObj = new PatchByLoginStatus(mContext, OrderConfirmActivity.class);
+				patchObj.patch();
 			}
 		});
 		
@@ -211,21 +215,4 @@ public class ShoppingcartActivity extends ListActivity {
 
 		return list;
 	}
-	
-	class CheckoutTask extends AsyncTask<String, Integer, Boolean>{
-
-		private String response;
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			// TODO 网络请求
-			response = HttpFactory.getHttp().getUrlContext(params[0], mContext);
-			if (response.length() > 0) {
-				return true;
-			}
-			return false;
-		}
-		
-	}
-	
 }
