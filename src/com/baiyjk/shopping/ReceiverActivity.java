@@ -97,15 +97,20 @@ public class ReceiverActivity extends ListActivity {
 					for (int i = 0; i < length; i++) {
 						JSONObject addressObj = responseArray.getJSONObject(i);
 						map = new HashMap<String, String>();
-						String address = addressObj.getString("hanprovice")
+						String area = addressObj.getString("hanprovice")
 								.concat(addressObj.getString("hancity"))
-								.concat(addressObj.getString("hanarea"))
-								.concat(addressObj.getString("address_info"));
+								.concat(addressObj.getString("hanarea"));
+						String info = addressObj.getString("address_info");
+						String address = area + info;
 						
 						map.put("addId", addressObj.getString("addid"));
 						map.put("name", addressObj.getString("receiver_name"));
 						map.put("phone", addressObj.getString("telephone"));						
 						map.put("address", address);
+						map.put("email", addressObj.getString("email2"));
+						map.put("post", addressObj.getString("post"));
+						map.put("area", area);
+						map.put("info", info);
 						map.put("defaultAddress", addressObj.getString("default_addr"));
 						list.add(map);
 					}

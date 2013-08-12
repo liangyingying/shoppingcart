@@ -88,9 +88,10 @@ public class ReceiversAdapter extends SimpleAdapter{
 			
 			@Override
 			public void onClick(View arg0) {
+				HashMap<String, String> tag = (HashMap<String, String>)arg0.getTag();
 				Intent intent = new Intent();
 				intent.setClass(mContext, EditReceiverActivity.class);
-				intent.putExtra("addId", arg0.getTag().toString());
+				intent.putExtra("receiverMap", tag);
 				mContext.startActivity(intent);
 			}
 		});
