@@ -4,5 +4,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <!-- 收货人信息titlebar -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#2F7D6D" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/receivers_back"
+            android:layout_alignParentLeft="true" 
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/back"
+            android:layout_centerVertical="true"/>
+             
+        <TextView
+            android:id="@+id/receivers_titlebar" 
+            android:layout_width="wrap_content" 
+            android:layout_height="40dip" 
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#FFFFFFFF"
+            android:text="收货人"
+            android:textSize="24sp"/> 
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/receivers_add"
+            android:text="新增收货人" />
+	</RelativeLayout>
+	
+    <!-- 已保存的有效地址 -->
+    <!-- 加载中... -->
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="loading ..."
+        android:gravity="center"
+        android:id="@+id/receivers_loading"/>
+    <ListView
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" 
+	        android:id="@id/android:list">
+	
+	</ListView>
 
 </LinearLayout>

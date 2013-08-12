@@ -206,9 +206,9 @@ public class AccountActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO 我的收获地址
 				Log.d("我的百洋", "我的收获地址");
-				
+				Intent intent = new Intent(mContext, ReceiverActivity.class);
+				startActivity(intent);
 			}
 		});
 

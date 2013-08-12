@@ -23,6 +23,8 @@ public class MainActivity extends ActivityGroup{
 	private Context context;
 	private TextView titlebar;
 	private SharedPreferences sp;
+	public final String PHPSESSIONKEY = "BAIYANG";
+//	public final String PHPSESSIONKEY = "baiyang";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -81,9 +83,9 @@ public class MainActivity extends ActivityGroup{
 					
 					sp = context.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE);
 					Class redirectClass = LoginActivity.class;
-					if (sp.getString("PHPSESSIONID", "").length() > 0) {
-						redirectClass = AccountActivity.class;
-					}
+//					if (sp.getString(PHPSESSIONKEY, "").length() > 0) {
+//						redirectClass = AccountActivity.class;
+//					}
 					
 					container.addView(manager.startActivity(
 							"PAGE_3", 
