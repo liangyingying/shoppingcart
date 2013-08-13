@@ -304,8 +304,11 @@ public class EditReceiverActivity extends Activity {
 			if (result.equals("OK")) {
 				//TODO 并退回到列表页。
 				Toast.makeText(mContext, "保存成功。", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent();
+				intent.setClass(mContext, ReceiverActivity.class);
+				startActivity(intent);
 			}else{
-				Toast.makeText(mContext, "保存失败。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "保存失败。请重试。", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
