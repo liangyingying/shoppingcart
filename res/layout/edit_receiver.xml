@@ -95,7 +95,9 @@
 			android:maxLength="35"
 			android:background="@drawable/edittext_bg"
 			android:inputType="text"
-			android:hint="--请选择省份--"/>
+			android:hint="--请选择省份--"
+			android:spinnerMode="dialog"
+			android:prompt="@string/select_province"/>
 		
 		
 	</LinearLayout>
@@ -123,7 +125,9 @@
 			android:maxLength="35"
 			android:background="@drawable/edittext_bg"
 			android:inputType="text"
-			android:hint="--请选择--"/>
+			android:hint="--请选择--"
+			android:spinnerMode="dialog"
+			android:prompt="@string/select_city"/>
 	</LinearLayout>
 	
 	<!-- 区 -->
@@ -149,7 +153,9 @@
 			android:maxLength="35"
 			android:background="@drawable/edittext_bg"
 			android:inputType="text"
-			android:hint="--请选择--"/>
+			android:hint="--请选择--"
+			android:spinnerMode="dialog"
+			android:prompt="@string/select_area"/>
 	</LinearLayout>
 	
 	<!-- 地址 -->

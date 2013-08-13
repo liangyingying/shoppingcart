@@ -56,7 +56,7 @@ public class ProductsListActivity extends ListActivity{
             
             @Override  
             public void run() {
-                final String strContext = productsJsonString = HttpFactory.getHttp().getUrlContext("/conghuiyunying/sort-1059/?format=true", context);  
+                final String strContext = productsJsonString = HttpFactory.getHttp().getRequest("/conghuiyunying/sort-1059/?format=true", context);  
                 runOnUiThread(new Runnable() {                    
                     @Override  
                     public void run() {  

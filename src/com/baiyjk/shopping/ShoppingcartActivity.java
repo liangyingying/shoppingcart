@@ -98,7 +98,7 @@ public class ShoppingcartActivity extends ListActivity {
 
 			@Override
 			public void run() {
-				cartJson = HttpFactory.getHttp().getUrlContext(
+				cartJson = HttpFactory.getHttp().getRequest(
 						"/showCart.do/?format=true", mContext);
 				runOnUiThread(new Runnable() {
 					@Override

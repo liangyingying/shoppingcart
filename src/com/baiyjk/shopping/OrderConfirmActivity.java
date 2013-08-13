@@ -77,7 +77,7 @@ public class OrderConfirmActivity extends Activity{
 		@Override
 		protected Boolean doInBackground(String... params) {
 			
-			responseString = HttpFactory.getHttp().getUrlContext(params[0], mContext);
+			responseString = HttpFactory.getHttp().getRequest(params[0], mContext);
 			if (responseString.length() > 0) {
 				return true;
 			}

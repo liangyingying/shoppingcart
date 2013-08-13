@@ -96,7 +96,7 @@ public class LoginActivity extends Activity {
 									+ "&log[pwd]=" + password
 									+ "&chkRememberUsername=" + autoLogin;
 							String result = HttpFactory.getHttp()
-									.getUrlContext(url, context);
+									.getRequest(url, context);
 							if (result.length() == 1 && Integer.parseInt(result) == 1) {//登录成功，暂时跳转到我的百洋页面
 								//登录成功和记住密码框为选中状态才保存用户信息
 								if (autoLoginCheckBox.isChecked()) {

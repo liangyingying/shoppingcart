@@ -127,7 +127,7 @@ public class ProductDetailActivity extends Activity{
 		            
 	        @Override  
 	        public void run() {
-		        	productDetailJson = HttpFactory.getHttp().getUrlContext("/" + productUrl + "/?format=true", context);
+		        	productDetailJson = HttpFactory.getHttp().getRequest("/" + productUrl + "/?format=true", context);
 //		        	productDetailJson = HttpFactory.getHttp().getUrlContext("/");
 //		        	Log.d(TAG, productDetailJson);
                 runOnUiThread(new Runnable() {                    
@@ -237,7 +237,7 @@ public class ProductDetailActivity extends Activity{
 		            		String addCartUrl = "/addCart.do?qty=1&flag=false&productId=" + productId;
 						
 						//url = "/ajax/getCart.do" 包括content,qty两个字段；
-						String ret = HttpFactory.getHttp().getUrlContext(addCartUrl, context);
+						String ret = HttpFactory.getHttp().getRequest(addCartUrl, context);
 						Log.d(TAG, ret);
 						
 						try {

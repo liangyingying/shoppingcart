@@ -76,7 +76,7 @@ public class OrderActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// TODO 网络请求
-			response = HttpFactory.getHttp().getUrlContext(params[0], mContext);
+			response = HttpFactory.getHttp().getRequest(params[0], mContext);
 			if (response.length() > 0) {
 				return true;
 			}

@@ -21,6 +21,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ public class ReceiverActivity extends ListActivity {
 	private TextView loadingView;
 	private View backView;
 	private View addAddressView;
+	private ListView mListView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -43,7 +46,7 @@ public class ReceiverActivity extends ListActivity {
 		
 		backView = findViewById(R.id.receivers_back);
 		addAddressView = findViewById(R.id.receivers_add);
-		
+		mListView = this.getListView();
 		
 		//返回按钮
 		backView.setOnClickListener(new OnClickListener() {
@@ -76,6 +79,18 @@ public class ReceiverActivity extends ListActivity {
 			}
 		});
 		
+//		//点击每条信息，设置默认地址
+//		mListView.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//					long arg3) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+		
+		
 		String urlString = "/myaddress.do?format=true";
 		GetReceiversTask task = new GetReceiversTask();
 		task.execute(urlString);
@@ -87,7 +102,7 @@ public class ReceiverActivity extends ListActivity {
 		
 		@Override
 		protected Boolean doInBackground(String... params) {
-			response = HttpFactory.getHttp().getUrlContext(params[0], mContext);
+			response = HttpFactory.getHttp().getRequest(params[0], mContext);
 			JSONArray responseArray;
 			try {
 				responseArray = new JSONArray(response);
@@ -109,9 +124,15 @@ public class ReceiverActivity extends ListActivity {
 						map.put("address", address);
 						map.put("email", addressObj.getString("email2"));
 						map.put("post", addressObj.getString("post"));
-						map.put("area", area);
+//						map.put("area", area);
 						map.put("info", info);
 						map.put("defaultAddress", addressObj.getString("default_addr"));
+						map.put("hanarea", addressObj.getString("hanarea"));
+						map.put("hancity", addressObj.getString("hancity"));
+						map.put("hanprovince", addressObj.getString("hanprovice"));
+						map.put("codearea", addressObj.getString("address_areaid"));
+						map.put("codecity", addressObj.getString("address_cityid"));
+						map.put("codeprovince", addressObj.getString("address_districtid"));
 						list.add(map);
 					}
 					return true;
@@ -151,7 +172,7 @@ public class ReceiverActivity extends ListActivity {
 		
 		@Override
 		protected Boolean doInBackground(String... params) {
-			String response = HttpFactory.getHttp().getUrlContext(params[0].toString(), mContext);
+			String response = HttpFactory.getHttp().getRequest(params[0].toString(), mContext);
 			return response.equals("OK") ? true : false;
 		}
 		

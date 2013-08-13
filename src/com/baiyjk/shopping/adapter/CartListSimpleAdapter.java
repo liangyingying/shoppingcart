@@ -312,7 +312,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 
 						@Override
 						public void run() {
-							cartJson = HttpFactory.getHttp().getUrlContext(
+							cartJson = HttpFactory.getHttp().getRequest(
 									"/ajax/delete.do/?format=true&type=0&ordersign=0&productId="
 											+ cartItemId + "&qty="
 											+ cartItemQty, context);

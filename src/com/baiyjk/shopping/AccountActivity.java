@@ -85,7 +85,7 @@ public class AccountActivity extends Activity {
 			public void run() {
 				// TODO 一次返回了所有的订单，还需改进
 				String url = "/mybaiyang.do?format=true";
-				mResponse = HttpFactory.getHttp().getUrlContext(url, mContext);
+				mResponse = HttpFactory.getHttp().getRequest(url, mContext);
 				runOnUiThread(new Runnable() {                   
                    
 					@Override  

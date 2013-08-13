@@ -15,18 +15,23 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -62,10 +67,9 @@ public class HttpClientUtil implements HttpApi {
 	}
 
 	@Override
-	public String getUrlContext(String strUrl, Context context) {
-		// TODO Auto-generated method stub
+	public String getRequest(String strUrl, Context context) {
 		strUrl = host + strUrl;
-		Log.d("Http", strUrl);
+		Log.d("Http Get", strUrl);
 		String responseStr = null;// 发送请求，得到响应
 		DefaultHttpClient httpClient = null;
 		HttpGet httpGet = null;
@@ -107,12 +111,78 @@ public class HttpClientUtil implements HttpApi {
 		} catch (ClientProtocolException e) {
 			Log.e(DEBUG_TAG, e.getMessage());
 		} catch (IOException e) {
-			Log.e(DEBUG_TAG, e.getMessage());
+//			Log.e(DEBUG_TAG, e.getMessage());
+			e.printStackTrace();
 		} catch (Exception e) {
 			Log.e(DEBUG_TAG, e.getMessage());
 //			Log.e(DEBUG_TAG, e.toString());
 		} finally {
 			abortConnection(httpGet, httpClient);
+		}
+		return responseStr;
+	}
+	
+	public String post(String url, Context context, List <NameValuePair> params){
+		url = host + url;
+		Log.d("Http Post", url);
+		String responseStr = null;// 发送请求，得到响应
+		DefaultHttpClient httpClient = null;
+		HttpPost httpPost = null;
+		try{
+			/*建立HTTP Post连线*/
+			url = urlEncode(url.trim(), CHARSET_UTF8);
+		    httpPost = new HttpPost(url);
+		    //Post运作传送变数必须用NameValuePair[]阵列储存
+	    
+	        //发出HTTP request
+	        httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+	        //取得HTTP response
+	        httpClient = new DefaultHttpClient();//getDefaultHttpClient(null);
+	        SharedPreferences pref = context.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE); // 0 - for private mode			
+			Editor editor = pref.edit();
+			PHPSESSIONID = pref.getString(PHPSESSIONKEY, "");			
+			if (null != PHPSESSIONID) {
+				httpPost.setHeader("Cookie", PHPSESSIONKEY + "=" + PHPSESSIONID);
+				Log.d("pref中保存的Id，request中的cookie " + PHPSESSIONKEY, PHPSESSIONID);
+			}
+	        HttpResponse httpResponse = httpClient.execute(httpPost);
+	        CookieStore mCookieStore = httpClient.getCookieStore();
+			List<Cookie> cookies = mCookieStore.getCookies();
+			for (int i = 0; i < cookies.size(); i++) {
+				// 这里是读取Cookie['PHPSESSID']的值存在静态变量中，保证每次都是同一个值
+				// or 保存到sharedPreference最好，不管什么时候都是取到同一个值()
+				
+				if (PHPSESSIONKEY.equals(cookies.get(i).getName())) {
+					Log.d("response 中包含的cookie", cookies.get(i).getName() + ":"
+							+ cookies.get(i).getValue());
+					String newSessionId = cookies.get(i).getValue();
+					
+					if (!PHPSESSIONID.equals(newSessionId)) {
+						editor.putString(PHPSESSIONKEY, newSessionId);
+						PHPSESSIONID = newSessionId;
+						editor.commit();
+					}
+
+					break;
+				}
+			}
+	        //若状态码为200 ok 
+	        if(httpResponse.getStatusLine().getStatusCode() == 200){
+	         //取出回应字串
+	        		responseStr = EntityUtils.toString(httpResponse.getEntity());
+	        }else {
+	        		responseStr = "" + httpResponse.getStatusLine().getStatusCode();
+			}
+	    } catch (ClientProtocolException e) {
+			Log.e(DEBUG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(DEBUG_TAG, e.getMessage());
+		} catch (Exception e) {
+//			Log.e(DEBUG_TAG, e.getMessage());
+			e.printStackTrace();
+//			Log.e(DEBUG_TAG, e.toString());
+		} finally {
+			abortConnection(httpPost, httpClient);
 		}
 		return responseStr;
 	}

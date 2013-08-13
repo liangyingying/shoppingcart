@@ -32,7 +32,7 @@ public class PatchByLoginStatus extends AsyncTask<String, Integer, Boolean>{
 	@Override
 	protected Boolean doInBackground(String... params) {
 		
-		String response = HttpFactory.getHttp().getUrlContext(url, mContext);
+		String response = HttpFactory.getHttp().getRequest(url, mContext);
 		try {
 			loginStatus = new JSONObject(response);
 			if (loginStatus.getString("loginstatus").equals("OK")) {

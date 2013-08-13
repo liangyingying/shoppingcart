@@ -1,86 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="provinces"> 
-        <item name="000000">--请选择--</item> 
-        <item name="110000">北京</item>
-        <item name="120000">天津</item> 
-        <item name="130000">河北</item> 
-        <item name="140000">山西</item> 
-        <item name="150000">内蒙古</item> 
-        <item name="210000">辽宁</item>
+    <string name="北京市">110000</string>
+    <string name="天津市">120000</string>
+    <string name="河北省">130000</string>
+    <string name="山西省">140000</string>
+    <string name="内蒙古自治区">150000</string>
+    <string name="辽宁省">210000</string>
+    <string name="吉林省">220000</string>
+    <string name="黑龙江省">230000</string>
+    <string name="上海市">310000</string>
+    <string name="江苏省">320000</string>
+    <string name="浙江省">330000</string>
+    <string name="安徽省">340000</string>
+    <string name="福建省">350000</string>
+    <string name="江西省">360000</string>
+    <string name="山东省">370000</string>
+    <string name="河南省">410000</string>
+    <string name="湖北省">420000</string>
+    <string name="湖南省">430000</string>
+    <string name="广东省">440000</string>
+    <string name="广西壮族自治区">450000</string>
+    <string name="海南省">460000</string>
+    <string name="重庆市">500000</string>
+    <string name="四川省">510000</string>
+    <string name="贵州省">520000</string>
+    <string name="云南省">530000</string>
+    <string name="西藏自治区">540000</string>
+    <string name="陕西省">610000</string>
+    <string name="甘肃省">620000</string>
+    <string name="青海省">630000</string>
+    <string name="宁夏回族自治区">640000</string>
+    <string name="新疆维吾尔自治区">650000</string>
+    
+    <string-array name="provinces">
+        <item>北京市</item>
+        <item>天津市</item> 
+        <item>河北省</item> 
+        <item>山西省</item> 
+        <item>内蒙古自治区</item> 
+        <item>辽宁省</item>
+        <item>吉林省</item>
+        <item>黑龙江省</item>
+        <item>上海市</item>
+        <item>江苏省</item>
+        <item>浙江省</item>
+        <item>安徽省</item>
+        <item>福建省</item>
+        <item>江西省</item>
+        <item>山东省</item>
+        <item>河南省</item>
+        <item>湖北省</item>
+        <item>湖南省</item>
+        <item>广东省</item>
+        <item>广西壮族自治区</item>
+        <item>海南省</item>
+        <item>重庆市</item>
+        <item>四川省</item>
+        <item>贵州省</item>
+        <item>云南省</item>
+        <item>西藏自治区</item>
+        <item>陕西省</item>
+        <item>甘肃省</item>       
+        <item>青海省</item>
+        <item>宁夏回族自治区</item>
+        <item>新疆维吾尔自治区</item>
     </string-array>
-    <!-- 北京 -->
-    <string-array name="北京">
-    		<item name="000000">--请选择--</item>
-        <item name="110100">市辖区</item>
-        <item name="110200">县</item>
+    
+    <!-- 北京市 -->
+    <string name="北京市_市辖区">110100</string>
+    <string name="北京市_县">110200</string>
+    <string-array name="北京市">
+        <item>市辖区</item>
+        <item>县</item>
     </string-array>
-    <string-array name="北京_市辖区">
-        <item name="000000">--请选择--</item>
-        <item name="110101">东城区</item>
-        <item name="110102">西城区</item>
-        <item name="110103">崇文区</item>
-        <item name="110104">宣武区</item>
-        <item name="110105">朝阳区</item>
-        <item name="110106">丰台区</item>
-        <item name="110107">石景山区</item>
-        <item name="110108">海淀区</item>
-        <item name="110109">门头沟区</item>
-        <item name="110110">房山区</item>
+    
+    <string name="北京市_市辖区_东城区">110101</string>
+    <string name="北京市_市辖区_西城区">110102</string>
+    <string name="北京市_市辖区_崇文区">110103</string>
+    <string name="北京市_市辖区_宣武区">110104</string>
+    <string name="北京市_市辖区_朝阳区">110105</string>
+    <string name="北京市_市辖区_丰台区">110106</string>
+    <string name="北京市_市辖区_石景山区">110107</string>
+    <string name="北京市_市辖区_海淀区">110108</string>
+    <string name="北京市_市辖区_门头沟区">110109</string>
+    <string name="北京市_市辖区_房山区">110111</string>
+    <string name="北京市_市辖区_通州区">110112</string>
+    <string name="北京市_市辖区_顺义区">110113</string>
+    <string name="北京市_市辖区_昌平区">110114</string>
+    <string name="北京市_市辖区_大兴区">110115</string>
+    <string name="北京市_市辖区_怀柔区">110116</string>
+    <string name="北京市_市辖区_平谷区">110117</string>
+    <string name="北京市_市辖区_密云县">110118</string>   
+    <string name="北京市_县_延庆县">110229</string>
+    <string-array name="北京市_市辖区">
+        <item>东城区</item>
+        <item>西城区</item>
+        <item>崇文区</item>
+        <item>宣武区</item>
+        <item>朝阳区</item>
+        <item>丰台区</item>
+        <item>石景山区</item>
+        <item>海淀区</item>
+        <item>门头沟区</item>
+        <item>房山区</item>
+        <item>通州区</item>
+        <item>顺义区</item>
+        <item>昌平区</item>
+        <item>大兴区</item>
+        <item>怀柔区</item>
+        <item>平谷区</item>
+        <item>密云县</item>
     </string-array>
-    <string-array name="北京_县">
-        <item name="000000">--请选择--</item>
-        <item name="110229">延庆县</item>
+    <string-array name="北京市_县">
+        <item>延庆县</item>
     </string-array>
     
     <!-- 天津 -->
-    <string-array name="天津">
-        <item name="000000">--请选择--</item>
-        <item name="120100">市辖区</item>
-        <item name="120200">县</item>
+    <string name="天津市_市辖区">120100</string>
+    <string name="天津市_县">120200</string>
+    <string-array name="天津市">       
+        <item>市辖区</item>
+        <item>县</item>
     </string-array>
-    <string-array name="天津_市辖区">
-        <item name="000000">--请选择--</item>
-        <item name="120101">和平区</item>
-        <item name="120102">河东区</item>
-        <item name="120103">河西区</item>
-        <item name="120104">南开区</item>
-        <item name="120105">河北区</item>
-        <item name="120106">红桥区</item>
-        <item name="120107">塘沽区</item>
-        <item name="120108">汉沽区</item>
-        <item name="120109">大港区</item>
-        <item name="120110">东丽区</item>
+    
+    <string name="天津市_市辖区_和平区">120101</string>
+    <string name="天津市_市辖区_河东区">120102</string>
+    <string name="天津市_市辖区_河西区">120103</string>
+    <string name="天津市_市辖区_南开区">120104</string>
+    <string name="天津市_市辖区_河北区">120105</string>
+    <string name="天津市_市辖区_红桥区">120106</string>
+    <string name="天津市_市辖区_塘沽区">120107</string>
+    <string name="天津市_市辖区_汉沽区">120108</string>
+    <string name="天津市_市辖区_大港区">120109</string>
+    <string name="天津市_市辖区_东丽区">120110</string>
+    <string name="天津市_市辖区_西青区">120111</string>
+    <string name="天津市_市辖区_津南区">120112</string>
+    <string name="天津市_市辖区_北辰区">120113</string>
+    <string name="天津市_市辖区_武清区">120114</string>
+    <string name="天津市_市辖区_宝坻区">120115</string>    
+    <string-array name="天津市_市辖区">       
+        <item>和平区</item>
+        <item>河东区</item>
+        <item>河西区</item>
+        <item>南开区</item>
+        <item>河北区</item>
+        <item>红桥区</item>
+        <item>塘沽区</item>
+        <item>汉沽区</item>
+        <item>大港区</item>
+        <item>东丽区</item>
+        <item>西青区</item>
+        <item>津南区</item>
+        <item>北辰区</item>
+        <item>武清区</item>
+        <item>宝坻区</item>
     </string-array>
-    <string-array name="天津_县">
-        <item name="000000">--请选择--</item>
-        <item name="120221">宁河县</item>
-        <item name="120223">静海县</item>
-        <item name="120225">蓟县</item>
+    
+    <string name="天津市_县_宁河县">120221</string>
+    <string name="天津市_县_静海县">120223</string>
+    <string name="天津市_县_蓟县">120225</string>
+    <string-array name="天津市_县">        
+        <item>宁河县</item>
+        <item>静海县</item>
+        <item>蓟县</item>
     </string-array>
     
     <!-- 河北 -->
-    <string-array name="河北">
-        <item name="000000">--请选择--</item>
-        <item name="130100">石家庄市</item>
-        <item name="130200">唐山市</item>
-        <item name="130300">秦皇岛市</item>
-        <item name="130400">邯郸市</item>
-        <item name="130500">XX市</item>
-        <item name="130600">保定市</item>
-        <item name="130700">张家口市</item>
-        <item name="130800">承德市</item>       
+    <string name="河北省_石家庄市">130100</string>
+    <string name="河北省_唐山市">130200</string>   
+    <string name="河北省_秦皇岛市">130300</string>
+    <string name="河北省_邯郸市">130400</string>
+    <string name="河北省_邢台市">130500</string>
+    <string name="河北省_保定市">130600</string>   
+    <string name="河北省_张家口市">130700</string>
+    <string name="河北省_承德市">130800</string>
+    <string name="河北省_沧州市">130900</string>
+    <string name="河北省_廊坊市">131000</string>
+    <string name="河北省_衡水市">131100</string>
+    <string-array name="河北省">
+        <item>石家庄市</item>
+        <item>唐山市</item>
+        <item>秦皇岛市</item>
+        <item>邯郸市</item>
+        <item>邢台市</item>
+        <item>保定市</item>
+        <item>张家口市</item>
+        <item>承德市</item>
+        <item>沧州市</item>
+        <item>廊坊市</item>
+        <item>衡水市</item>      
     </string-array>
-    <string-array name="河北_石家庄市">
-        <item name="000000">--请选择--</item>
-        <item name="130102">长安区</item>
-        <item name="130103">桥东区</item>
-        <item name="130104">桥西区</item>
-        <item name="130105">新华区</item>
-        <item name="130107">井径矿区</item>
-        <item name="130108">裕华区</item>
-        <item name="130121">井陉县</item> 
-        <item name="130123">正定县</item> 
-        <item name="130124">栾城县</item>       
+    
+    <string name="河北省_石家庄市_长安区">130102</string>
+    <string name="河北省_石家庄市_桥东区">130103</string>
+    <string name="河北省_石家庄市_桥西区">130104</string>
+    <string name="河北省_石家庄市_新华区">130105</string>
+    <string name="河北省_石家庄市_井径矿区">130107</string>
+    <string name="河北省_石家庄市_裕华区">130108</string>
+    <string name="河北省_石家庄市_井陉县">130121</string>
+    <string name="河北省_石家庄市_正定县">130123</string>
+    <string name="河北省_石家庄市_栾城县">130124</string>
+    <string name="河北省_石家庄市_行唐县">130125</string>
+    <string name="河北省_石家庄市_灵寿县">130126</string>
+    <string name="河北省_石家庄市_高邑县">130127</string>
+    <string name="河北省_石家庄市_深泽县">130128</string>
+    <string name="河北省_石家庄市_赞皇县">130129</string>
+    <string name="河北省_石家庄市_无极县">130130</string>
+    <string name="河北省_石家庄市_平山县">130131</string>
+    <string name="河北省_石家庄市_元氏县">130132</string>
+    <string name="河北省_石家庄市_赵县">130133</string>
+    <string name="河北省_石家庄市_辛集县">130181</string>
+    <string name="河北省_石家庄市_藁城市">130182</string>
+    <string name="河北省_石家庄市_晋州市">130183</string>
+    <string name="河北省_石家庄市_新乐市">130184</string>
+    <string name="河北省_石家庄市_鹿泉市">130185</string>
+    <string-array name="河北省_石家庄市">
+        <item>长安区</item>
+        <item>桥东区</item>
+        <item>桥西区</item>
+        <item>新华区</item>
+        <item>井径矿区</item>
+        <item>裕华区</item>
+        <item>井陉县</item> 
+        <item>正定县</item> 
+        <item>栾城县</item>
+        <item>行唐县</item>
+        <item>灵寿县</item> 
+      	<item>高邑县</item> 
+      	<item>深泽县</item> 
+      	<item>赞皇县</item> 
+      	<item>无极县</item> 
+      	<item>平山县</item> 
+      	<item>元氏县</item> 
+      	<item>赵县</item> 
+      	<item>辛集县</item> 
+      	<item>藁城县</item> 
+      	<item>晋州县</item> 
+      	<item>新乐县</item> 
+      	<item>鹿泉县</item>       
     </string-array>
 </resources>
