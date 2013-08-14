@@ -245,7 +245,7 @@ public class EditReceiverActivity extends Activity {
 			    String error = null;
 			    if (name.trim().length() == 0) {
 					error = "收货人不能为空。";
-				}else if (name.trim().length() > 32 || name.trim().length() < 4) {
+				}else if (name.trim().length() > 32 || name.trim().length() < 2) {
 					error = "收货人长度不符。";
 				}else if (name.indexOf("<") != -1 || name.indexOf(">") != -1) {
 					error = "收货人不能含特殊字符。";

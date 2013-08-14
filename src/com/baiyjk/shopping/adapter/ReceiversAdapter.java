@@ -72,12 +72,11 @@ public class ReceiversAdapter extends SimpleAdapter{
 				Log.d("设置为默认地址：", tag.get("addId").toString());
 				for (int i = 0; i < mData.size(); i++) {
 					Map<String, String> map = mData.get(i);
-					if (i == position){				
+					if (i == position && map.get("defaultAddress").equals("0")){				
 						map.put("defaultAddress", "1");
-						Log.d("默认地址序号：", "" + position);
-					}else {
+					}else if (i != position && map.get("defaultAddress").equals("1")) {
 						map.put("defaultAddress", "0");
-					}					
+					} 					
 				}
 				notifyDataSetChanged();
 			}

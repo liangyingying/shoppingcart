@@ -19,8 +19,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -35,12 +37,15 @@ public class ReceiverActivity extends ListActivity {
 	private View backView;
 	private View addAddressView;
 	private ListView mListView;
+	private String mFromActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.receivers);
 		
+		Intent intent = getIntent();
+		mFromActivity = intent.getStringExtra("fromActivity");
 		mContext = this;
 		loadingView = (TextView)findViewById(R.id.receivers_loading);
 		
@@ -78,18 +83,30 @@ public class ReceiverActivity extends ListActivity {
 				mContext.startActivity(intent);				
 			}
 		});
-		
-//		//点击每条信息，设置默认地址
-//		mListView.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-//					long arg3) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-		
+		/*
+		//点击每条信息，设置默认地址
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v, int position,
+					long arg3) {
+				v.findViewById(R.id.receiver_item_default).setVisibility(View.VISIBLE);
+				Map<String, String> address = list.get(position);				
+				String addId = address.get("addId");
+				
+				Log.d("设置为默认地址：", address.get("addId"));
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, String> map = list.get(i);
+					if (i == position){				
+						map.put("defaultAddress", "1");
+					}else {
+						map.put("defaultAddress", "0");
+					}					
+				}
+				notifyDataSetChanged();
+			}
+		});
+		*/
 		
 		String urlString = "/myaddress.do?format=true";
 		GetReceiversTask task = new GetReceiversTask();

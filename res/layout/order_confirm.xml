@@ -68,8 +68,9 @@
 	        <LinearLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" 
+	            android:id="@+id/order_confirm_pay"
 	            android:orientation="vertical"
-	            android:layout_margin="16dp">
+	            android:layout_margin="16dp">	            
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
@@ -78,6 +79,11 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
 	                android:id="@+id/order_confirm_paymethod"/>
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:id="@+id/order_confirm_paytype"/>
+	            
 	        </LinearLayout>
 	        
 	        <!-- 配送方式 -->
@@ -110,10 +116,16 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="发票信息"/>
+	            <!-- 发票抬头 可能为空 -->
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:id="@+id/order_confirm_invoice"/>
+	                android:id="@+id/order_confirm_invoice_title"/>
+	            <!-- 发票内容 -->
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:id="@+id/order_confirm_invoice_content_name"/>
 	        </LinearLayout>
 	        
 	        <!-- 商品清单 -->
@@ -129,7 +141,30 @@
 	                android:text="商品清单"/>
 	        </LinearLayout>
 	        
+	        <!-- 订单备注 -->
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_margin="16dp">
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="订单备注"/>
+	            <EditText 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:id="@+id/order_confirm_customdesc"
+	                android:hint="限20字"/>
+	        </LinearLayout>
+	        
 	        <!-- 订单总计 -->
+	        
+	        <Button 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="提交订单"
+	            android:id="@+id/order_confirm_submit"/>
 	    </LinearLayout>	
 	</ScrollView>
 </LinearLayout>
