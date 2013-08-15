@@ -307,6 +307,10 @@ public class EditReceiverActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(mContext, ReceiverActivity.class);
 				startActivity(intent);
+				
+//		        intent.putExtra("result", "");
+////		        mIntent.putExtra("index", mPosition);
+//				setResult(0, intent);
 			}else{
 				Toast.makeText(mContext, "保存失败。请重试。", Toast.LENGTH_SHORT).show();
 			}
