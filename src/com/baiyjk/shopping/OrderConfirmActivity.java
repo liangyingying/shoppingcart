@@ -3,6 +3,7 @@ package com.baiyjk.shopping;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONException;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.utils.ImageLoader;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +46,8 @@ public class OrderConfirmActivity extends Activity{
 	private TextView mInvoiceContentNameView;
 	private TextView mCustomDescView;
 	private Button mSubmitButton;
-	private String defaultAddressId;
+	private String oldAddressId;
+	private int requestCode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -53,6 +56,30 @@ public class OrderConfirmActivity extends Activity{
 		
 		mContext = this;
 		initView();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+		if (intent == null) {//没有更改地址
+			return;
+		}
+		Map<String, String> res = (Map<String, String>)intent.getSerializableExtra("result");
+//		int index = intent.getIntExtra("index", -1);
+		if (res == null) {
+			return;
+		}
+		switch (requestCode) {
+			case 0://收货人
+				oldAddressId = res.get("addId");
+				mReceiverNameView.setText(res.get("name"));
+				mReceiverAddessView.setText(res.get("address"));
+				mReceiverPhoneView.setText(res.get("phone"));
+				break;
+			case 1://TODO 配送
+				break;
+			default:
+				break;
+		}
 	}
 	
 	private void initView(){
@@ -80,17 +107,18 @@ public class OrderConfirmActivity extends Activity{
 		task.execute(url);
 		
 		// 修改收货人信息,跳转到收货人列表
-		mReceiverView.setOnTouchListener(new OnTouchListener() {
+		mReceiverView.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
+			public void onClick(View v) {
+//				if (event.getAction() == MotionEvent.ACTION_UP) {
 					Intent intent = new Intent(mContext, ReceiverActivity.class);
 					intent.putExtra("fromActivity", "OrderConfirmActivity");
-					intent.putExtra("defaultAddressId", defaultAddressId);
-					startActivity(intent);
-				}
-				return false;
+					intent.putExtra("oldAddressId", oldAddressId);
+					requestCode = 0;
+					startActivityForResult(intent, requestCode);
+//				}
+//				return false;
 			}
 		});
 		
@@ -166,7 +194,7 @@ public class OrderConfirmActivity extends Activity{
 				//收货人姓名，电话，地址。除了收货人其他信息都有默认值。
 				if (!hasDefaultReceiver) {
 					mReceiverNameView.setText("您没有设置默认收货地址。");
-					defaultAddressId = null;
+					oldAddressId = null;
 				}else {
 					mReceiverNameView.setText(receiverObject.getString("receiver_name"));
 					mReceiverPhoneView.setText(receiverObject.getString("telephone"));
@@ -176,7 +204,7 @@ public class OrderConfirmActivity extends Activity{
 							.concat(addressJsonObject.getString("address_area_name"))
 							.concat(receiverObject.getString("address_info"));
 					mReceiverAddessView.setText(address);
-					defaultAddressId = receiverObject.getString("addid");
+					oldAddressId = receiverObject.getString("addid");
 				}
 				
 				//配送方式
