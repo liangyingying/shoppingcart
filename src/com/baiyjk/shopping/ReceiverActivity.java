@@ -13,6 +13,7 @@ import com.baiyjk.shopping.adapter.CartListSimpleAdapter;
 import com.baiyjk.shopping.adapter.ReceiversAdapter;
 import com.baiyjk.shopping.http.HttpFactory;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -20,11 +21,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,14 +42,22 @@ public class ReceiverActivity extends ListActivity {
 	private View addAddressView;
 	private ListView mListView;
 	private String mFromActivity;
+	private String mOldAddressId;//原来地址
+	private Intent mIntent;
+	private String newAddressId = null;//新设置的地址
+	private int mPosition;
+	private Map<String, String> activityResultMap = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.receivers);
 		
+		//如果是来自订单确认页面
 		Intent intent = getIntent();
 		mFromActivity = intent.getStringExtra("fromActivity");
+		mOldAddressId = intent.getStringExtra("oldAddressId");
+		
 		mContext = this;
 		loadingView = (TextView)findViewById(R.id.receivers_loading);
 		
@@ -53,26 +65,10 @@ public class ReceiverActivity extends ListActivity {
 		addAddressView = findViewById(R.id.receivers_add);
 		mListView = this.getListView();
 		
-		//返回按钮
-		backView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String defaultAddressId = null;
-				for (int i = 0; i < list.size(); i++) {
-					Map<String, String> map = list.get(i);
-					if (map.get("defaultAddress").equals("1")) 						
-						defaultAddressId = map.get("addId");				
-				}
-				if (defaultAddressId != null) {
-					String url = "/ajax/setDefaultAddr.do?addressId=".concat(defaultAddressId);
-					SetDefaultAddressTask task = new SetDefaultAddressTask();
-					task.execute(url);
-				}
-				
-				finish();
-			}
-		});
+		String urlString = "/myaddress.do?format=true";
+		GetReceiversTask task = new GetReceiversTask();
+		task.execute(urlString);
+		
 		//新增收货人按钮
 		addAddressView.setOnClickListener(new OnClickListener() {
 			
@@ -80,10 +76,11 @@ public class ReceiverActivity extends ListActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(mContext, EditReceiverActivity.class);
-				mContext.startActivity(intent);				
+				mContext.startActivity(intent);	
+//				startActivityForResult(intent, 0);
 			}
 		});
-		/*
+		
 		//点击每条信息，设置默认地址
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -94,25 +91,53 @@ public class ReceiverActivity extends ListActivity {
 				Map<String, String> address = list.get(position);				
 				String addId = address.get("addId");
 				
-				Log.d("设置为默认地址：", address.get("addId"));
+				Log.d("我要使用地址：", addId + ":" + position + ":" + address.get("defaultAddress"));
 				for (int i = 0; i < list.size(); i++) {
 					Map<String, String> map = list.get(i);
+					Log.d("notifydatachage:", i + ":" + position + ":" + map.get("defaultAddress"));
+					
+//					Log.d("test2", (map.get("defaultAddress").equals("0")) + "");
+//					Log.d("test3", (map.get("defaultAddress").equals("null")) + "");
 					if (i == position){				
-						map.put("defaultAddress", "1");
-					}else {
-						map.put("defaultAddress", "0");
-					}					
+//						map.put("defaultAddress", "1");
+//						Log.d("change->", map.get("addId"));
+//						mPosition = i;//标记activityResult中将要修改的值
+						newAddressId = map.get("addId");		
+					}
+					map.put("usedAddressId", addId);
 				}
-				notifyDataSetChanged();
+				activityResultMap = address;
+				BaseAdapter adapter = (BaseAdapter)mListView.getAdapter();
+				adapter.notifyDataSetChanged();
 			}
-		});
-		*/
-		
-		String urlString = "/myaddress.do?format=true";
-		GetReceiversTask task = new GetReceiversTask();
-		task.execute(urlString);
+		});		
 	}
 	
+    
+    @Override
+    public void onBackPressed (){
+    		Log.d("地址列表", "你按了后退键");
+//		for (int i = 0; i < list.size(); i++) {
+//			Map<String, String> map = list.get(i);
+//			if (map.get("defaultAddress").equals("1")) 						
+//				newDefaultAddressId = map.get("addId");				
+//		}
+		//后退时，如果更换了地址Id ,不再设置成默认地址，仅更新订单的地址信息  		
+		if (newAddressId != null && !newAddressId.equals(mOldAddressId)) {
+//			String url = "/ajax/setDefaultAddr.do?addressId=".concat(newAddressId);
+//			SetDefaultAddressTask task = new SetDefaultAddressTask();
+//			task.execute(url);
+			
+			if (mFromActivity.equals("OrderConfirmActivity")) {
+				mIntent = new Intent();
+		        mIntent.putExtra("result", (HashMap<String, String>)activityResultMap);
+//		        mIntent.putExtra("index", mPosition);
+				this.setResult(0, mIntent);
+			}
+		}
+		super.onBackPressed();
+    }
+
 	class GetReceiversTask extends AsyncTask<String, Integer, Boolean>{
 		private String response;
 		private Map<String, String> map;
@@ -150,6 +175,7 @@ public class ReceiverActivity extends ListActivity {
 						map.put("codearea", addressObj.getString("address_areaid"));
 						map.put("codecity", addressObj.getString("address_cityid"));
 						map.put("codeprovince", addressObj.getString("address_districtid"));
+						map.put("usedAddressId", mOldAddressId);
 						list.add(map);
 					}
 					return true;
