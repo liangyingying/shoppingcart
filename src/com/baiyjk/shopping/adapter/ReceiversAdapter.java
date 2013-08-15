@@ -45,21 +45,29 @@ public class ReceiversAdapter extends SimpleAdapter{
 		
 		convertView = layoutinflater.inflate(this.mResource, null);
 		View v = super.getView(position, convertView, parent);
-		TextView addIdView = (TextView)convertView.findViewById(R.id.receiver_item_id);
+//		TextView addIdView = (TextView)convertView.findViewById(R.id.receiver_item_id);
+		Map<String, String> item = this.mData.get(position);
 		View editView = convertView.findViewById(R.id.receiver_item_edit);
-		int addId = Integer.parseInt(addIdView.getText().toString());
+//		int addId = Integer.parseInt(addIdView.getText().toString());
+		String addId = item.get("addId");
 		Map<String, Integer> tag = new HashMap<String, Integer>();
-		tag.put("addId", addId);
+		tag.put("addId", Integer.parseInt(addId));
 		tag.put("position", Integer.valueOf(position));
 		convertView.setTag(tag);
-		editView.setTag(this.mData.get(position));
-		//默认地址画勾
-		ImageView isDefault = (ImageView)convertView.findViewById(R.id.receiver_item_default);
-		if (mData.get(position).get("defaultAddress").equals("1")) {
-			isDefault.setVisibility(View.VISIBLE);
+		
+		editView.setTag(item);
+		//默认地址画勾，去掉此功能，因为设置的默认地址并不作为订单的第一地址。仅标识当前正使用/要使用的地址。
+		ImageView isUsed = (ImageView)convertView.findViewById(R.id.receiver_item_default);
+//		if (mData.get(position).get("defaultAddress").equals("1")) {
+//			isUsed.setVisibility(View.VISIBLE);
+//		}
+//		Log.d("正在使用ID：", item.get("usedAddressId"));
+		if (item.get("usedAddressId").equals(addId)) {
+			isUsed.setVisibility(View.VISIBLE);
 		}
 		
 		//点击整条，选中为默认地址
+		/*
 		v.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -81,7 +89,7 @@ public class ReceiversAdapter extends SimpleAdapter{
 				notifyDataSetChanged();
 			}
 		});
-		
+		*/
 		//点击编辑，编辑该条
 		editView.setOnClickListener(new OnClickListener() {
 			
