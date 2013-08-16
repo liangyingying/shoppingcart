@@ -6,28 +6,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.baiyjk.shopping.http.HttpFactory;
-import com.baiyjk.shopping.utils.ImageLoader;
-
 import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.baiyjk.shopping.http.HttpFactory;
+import com.baiyjk.shopping.utils.ImageLoader;
 
 public class OrderConfirmActivity extends Activity{
 	private Context mContext;
@@ -42,12 +43,18 @@ public class OrderConfirmActivity extends Activity{
 	private LinearLayout mReceiverView;
 	private TextView mPayTypeView;
 	private TextView mPayMethodView;
+	private String oldPayMethod;
+	private String newPayMethod;
 	private TextView mInvoiceTitleView;
 	private TextView mInvoiceContentNameView;
 	private TextView mCustomDescView;
 	private Button mSubmitButton;
 	private String oldAddressId;
 	private int requestCode;
+	private LinearLayout mPayView;
+	private int mPaymentType;
+	private String[] arrs = new String[]{"支付宝"};
+	private int mPayId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -55,6 +62,7 @@ public class OrderConfirmActivity extends Activity{
 		setContentView(R.layout.order_confirm);
 		
 		mContext = this;
+		
 		initView();
 	}
 	
@@ -70,12 +78,39 @@ public class OrderConfirmActivity extends Activity{
 		}
 		switch (requestCode) {
 			case 0://收货人
-				oldAddressId = res.get("addId");
 				mReceiverNameView.setText(res.get("name"));
 				mReceiverAddessView.setText(res.get("address"));
 				mReceiverPhoneView.setText(res.get("phone"));
+//				TODO 该区域是否支持货到付款 /ajax/setCurrAddr.do
+				if (!res.get("addId").equals(oldAddressId)) {
+					//displayId:1,addid:?,shr
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("radio_address", res.get("addid")));
+					params.add(new BasicNameValuePair("SHR_receiver_name", res.get("name")));
+					params.add(new BasicNameValuePair("SHR_address_districtid", res.get("codeprovince")));
+					params.add(new BasicNameValuePair("SHR_address_cityid", res.get("codecity")));
+					params.add(new BasicNameValuePair("SHR_address_areaid", res.get("codearea")));
+					params.add(new BasicNameValuePair("SHR_address_info", res.get("info")));					
+					params.add(new BasicNameValuePair("SHR_post", res.get("post")));
+					params.add(new BasicNameValuePair("SHR_telephone", res.get("phone")));
+					params.add(new BasicNameValuePair("SHR_email2", res.get("email")));
+					params.add(new BasicNameValuePair("displayId", Integer.toString(1)));
+					params.add(new BasicNameValuePair("addid", res.get("addid")));
+					params.add(new BasicNameValuePair("SHR_district_name", res.get("hanprovince")));
+					params.add(new BasicNameValuePair("SHR_city_name", res.get("hancity")));				
+					params.add(new BasicNameValuePair("SHR_area_name", res.get("hanarea")));
+					params.add(new BasicNameValuePair("ordersign", Integer.toString(0)));
+					params.add(new BasicNameValuePair("orderId", "0"));
+					params.add(new BasicNameValuePair("receiverFlag", Boolean.toString(true)));
+					params.add(new BasicNameValuePair("format", "true"));
+					String url = "/ajax/setCurrAddr.do";
+					SetAddressTask task = new SetAddressTask();
+					task.execute(url, params);
+				}
+				oldAddressId = res.get("addId");
 				break;
-			case 1://TODO 配送
+			case 1://TODO 支付方式
+				
 				break;
 			default:
 				break;
@@ -92,7 +127,8 @@ public class OrderConfirmActivity extends Activity{
 		mReceiverAddessView = (TextView)findViewById(R.id.order_confirm_receiver_address);
 		mShippingView = (TextView)findViewById(R.id.order_confirm_shipping);
 		mShippingTimeView = (TextView)findViewById(R.id.order_confirm_shipping_time);
-		mPayTypeView = (TextView)findViewById(R.id.order_confirm_paytype);
+//		mPayView = (LinearLayout)findViewById(R.id.order_confirm_pay);
+//		mPayTypeView = (TextView)findViewById(R.id.order_confirm_paytype);
 		mPayMethodView = (TextView)findViewById(R.id.order_confirm_paymethod);
 		mInvoiceTitleView = (TextView)findViewById(R.id.order_confirm_invoice_title);
 		mInvoiceContentNameView = (TextView)findViewById(R.id.order_confirm_invoice_content_name);
@@ -122,9 +158,71 @@ public class OrderConfirmActivity extends Activity{
 			}
 		});
 		
-		//TODO 点击支付，修改支付信息。支付方式最多三种，货到付款，在线支付，银行电汇，用弹出框就好。
-		// 注意货到付款只支持某些区域
+		// 点击支付，修改支付信息。支付方式最多2种，货到付款，在线支付，用弹出框就好。
+		//  注意货到付款只支持某些区域, TODO 还和额度有关，购物车总额小于100的不支持
 		findViewById(R.id.order_confirm_pay).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				int checkedItem = 0;
+				String checkedPayMethod = oldPayMethod;
+				if (mPaymentType == 1) {
+					arrs = new String[]{"货到付款", "支付宝"};					
+				}
+				if (oldPayMethod.equals("支付宝") && mPaymentType == 1) {
+					checkedItem = 1;
+				}
+				newPayMethod = oldPayMethod;
+				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+				builder.setTitle("请选择支付方式：").setIcon(android.R.drawable.ic_dialog_info)
+					.setSingleChoiceItems(arrs, checkedItem, 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								
+								if (arrs[0].equals("货到付款")) {
+									newPayMethod = arrs[which];
+								}
+								dialog.dismiss();
+							}
+						})
+					.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (newPayMethod != null && !newPayMethod.equals(oldPayMethod)) {
+								mPayMethodView.setText(newPayMethod);//此处最好有loading图显示
+								String payid = "2";
+								String paymode = "66";
+								if (newPayMethod.equals("货到付款")) {
+									payid = "1";
+									paymode = "1";
+								}
+								List<NameValuePair> params = new ArrayList<NameValuePair>();
+								params.add(new BasicNameValuePair("Edit_payid", payid));//1,1
+								params.add(new BasicNameValuePair("Edit_paymode", paymode));//2,66
+//								params.add(new BasicNameValuePair("outLine_bank", null));
+								params.add(new BasicNameValuePair("displayId", Integer.toString(3)));
+								params.add(new BasicNameValuePair("ordersign", Integer.toString(0)));
+								params.add(new BasicNameValuePair("orderId", "0"));
+								params.add(new BasicNameValuePair("receiverFlag", Boolean.toString(true)));
+								params.add(new BasicNameValuePair("format", "true"));
+								String url = "/ajax/setCurrAddr.do";
+								SetAddressTask task = new SetAddressTask();
+								task.execute(url, params);
+							}
+							
+						}
+					})
+					.setNegativeButton("取消", null).show();
+
+			}
+		});
+		
+		// TODO 编辑发票信息
+		findViewById(R.id.order_confirm_invoice).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -136,7 +234,7 @@ public class OrderConfirmActivity extends Activity{
 		/** 
 		 * 提交订单
 		 * TODO 提交订单之前确保收货人，配送，支付方式，发票信息已确定；
-		 * TODO /ajax/setAddress.do?addressId=receiver.addid 看起来貌似没有并要请求
+		 * TODO /ajax/setAddress.do?addressId=receiver.addid 看起来貌似没有必要请求
 		 * TODO 如果已有orderId，查看是否还可以更改 /sales/order/checkOrderPrint?orderId=?
 		 * 		如果没有orderId,查看是否超出当日订单最大数，/ajax/orderMaxLimitValid.do
 		 * TODO 查看商品库存是否还够 /ajax/orderProdStockValid.do
@@ -207,13 +305,16 @@ public class OrderConfirmActivity extends Activity{
 					oldAddressId = receiverObject.getString("addid");
 				}
 				
-				//配送方式
-				mShippingView.setText(shippingObject.getJSONObject("shipment").getString("dict_show"));
-				mShippingTimeView.setText(shippingObject.getJSONObject("shiptime").getString("dict_show"));
+				//配送方式 固定，快递送货上门
+//				mShippingView.setText(shippingObject.getJSONObject("shipment").getString("dict_show"));
+//				mShippingTimeView.setText(shippingObject.getJSONObject("shiptime").getString("dict_show"));
 				
 				//支付方式
 				mPayTypeView.setText(paymentObject.getString("pay_type_name"));
 				mPayMethodView.setText(paymentObject.getString("payment"));
+				oldPayMethod = paymentObject.getString("payment");
+				mPayId = paymentObject.getInt("payid");
+				mPaymentType = paymentObject.getInt("paymentType1");//是否支持货到付款
 				
 				//发票
 				if(invoiceObject.getString("if_invoice") == "0"){
@@ -310,6 +411,34 @@ public class OrderConfirmActivity extends Activity{
 			
 			mProductsContainer.addView(productView);
 			mImageLoader.DisplayImage(imageLink, productImageView);
+		}
+		
+	}
+	
+	class SetAddressTask extends AsyncTask<Object, Integer, Boolean>{
+		JSONObject obj;
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			// TODO 
+			String response = HttpFactory.getHttp().post(params[0].toString(), mContext, (List<NameValuePair>)params[1]);
+			try {
+				JSONObject resObject = new JSONObject(response);
+				if (resObject.has("shippingFee")) {
+					obj = resObject;
+					return true;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			if(result){
+				//TODO 更新对应数据
+			}
+			
 		}
 		
 	}

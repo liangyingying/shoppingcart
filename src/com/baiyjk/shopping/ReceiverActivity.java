@@ -31,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // /myaddress.do?format=true
 // /ajax/addAddr.do POST resposne="OK" or "NO"
@@ -74,6 +75,11 @@ public class ReceiverActivity extends ListActivity {
 			
 			@Override
 			public void onClick(View v) {
+				//新增前判断地址数不能超过8条
+			    if (list.size() >= 8) {
+					Toast.makeText(mContext, "收货地址最多保存8条。", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				Intent intent = new Intent();
 				intent.setClass(mContext, EditReceiverActivity.class);
 				mContext.startActivity(intent);	

@@ -79,10 +79,10 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
 	                android:id="@+id/order_confirm_paymethod"/>
-	            <TextView 
+	            <!-- <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
-	                android:id="@+id/order_confirm_paytype"/>
+	                android:id="@+id/order_confirm_paytype"/> -->
 	            
 	        </LinearLayout>
 	        
@@ -92,14 +92,16 @@
 	            android:layout_height="wrap_content" 
 	            android:orientation="vertical"
 	            android:layout_margin="16dp">
-	            <TextView 
+	            <TextView
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
 	                android:text="配送方式"/>
 	            <TextView
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
-	                android:id="@+id/order_confirm_shipping"/>	                
+	                android:id="@+id/order_confirm_shipping"
+	                android:text="快递送货上门"/>
+	                            
 	            <TextView
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
@@ -111,6 +113,7 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:orientation="vertical"
+	            android:id="@+id/order_confirm_invoice"
 	            android:layout_margin="16dp">
 	            <TextView 
 	                android:layout_width="wrap_content"

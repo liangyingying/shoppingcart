@@ -279,6 +279,7 @@ public class EditReceiverActivity extends Activity {
 			    params.add(new BasicNameValuePair("PAYID", "1"));
 			    params.add(new BasicNameValuePair("SEQID", "1")); 
 			    
+			    
 			    SaveReceiverTask task = new SaveReceiverTask();
 			    task.execute(url, params);
 			    
