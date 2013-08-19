@@ -33,7 +33,7 @@
         <activity
             android:name="com.baiyjk.shopping.ShoppingcartActivity"
            
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <!--  android:windowSoftInputMode = "adjustPan"> -->
         </activity>
         <activity

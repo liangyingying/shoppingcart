@@ -9,23 +9,32 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.provider.ContactsContract.CommonDataKinds.Identity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baiyjk.shopping.R;
+import com.baiyjk.shopping.ShoppingcartActivity;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.utils.ImageLoader;
 
@@ -37,6 +46,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 	Handler handler = new Handler();
 	private CartListSimpleAdapter adapter;
 	private LayoutInflater layoutinflater;
+	private InputMethodManager inputMgr;
 
 	private String productUrl;
 	private String productId;
@@ -65,6 +75,8 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 		this.layoutinflater = LayoutInflater.from(context);
 		mMapQty = new HashMap<Integer, String>();
 		mMapFocusMap = new HashMap<Integer, Boolean>();
+		inputMgr = (InputMethodManager)context.
+	            getSystemService(Context.INPUT_METHOD_SERVICE);
 	}
 
 	@Override
@@ -157,142 +169,59 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 			minusView = (TextView) myView.findViewById(R.id.cart_product_minus);
 			plusView = (TextView) myView.findViewById(R.id.cart_product_plus);
 			qtyView = (TextView) myView.findViewById(R.id.cart_product_edittext);
-
-			// 数量编辑框
-//			qtyView.setInputType(InputType.TYPE_CLASS_PHONE);
-			
-//			qtyView.addTextChangedListener(new TextWatcher() {
-//				public void onTextChanged(CharSequence s, int start,
-//						int before, int count) {
-//				}
-//
-//				public void beforeTextChanged(CharSequence s, int start,
-//						int count, int after) {
-//				}
-//
-//				public void afterTextChanged(Editable s) {
-//					mMapQty.put(position, s.toString());
-//				}
-//			});
-			
-//			qtyView.setOnTouchListener(new OnTouchListener() {
-//				
-//				@Override
-//				public boolean onTouch(View v, MotionEvent event) {
-//					// TODO Auto-generated method stub
-//					boolean hasFocus = v.hasFocus();
-//					Log.d("focus change", "" + hasFocus);
-//					if (hasFocus) {
-//						InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//						imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//					}
-//					return false;
-//				}
-//			});
 			
 			qtyView.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-//					boolean hasFocus = v.hasFocus();
-//					if (hasFocus) {
-//						InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//						imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-						//清空之前保存的值，保存新的焦点position
-//						mMapFocusMap.clear();
-//						mMapFocusMap.put(position, true);
-						
-						
-//					}
-					final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-					dialog.setContentView(R.layout.shoppingcart_dialog);
-					EditText qtyEditText = (EditText)dialog.findViewById(R.id.cart_product_edittext);
-					LinearLayout dialogLayout = (LinearLayout)dialog.findViewById(R.id.shoppingcart_dialog);
+					final View layout = layoutinflater.inflate(R.layout.shoppingcart_dialog,null);
+//					final String qty = data.get(position).get("qty").toString();
+					final int pos = position;
+					final View itemView = v;
+					
+
+//					final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+//					dialog.setContentView(R.layout.shoppingcart_dialog);
+					EditText qtyEditText = (EditText)layout.findViewById(R.id.cart_product_edittext);
+//					RelativeLayout dialogLayout = (RelativeLayout)layout.findViewById(R.id.shoppingcart_dialog);
 					qtyEditText.setText(data.get(position).get("qty").toString());
 					qtyEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 						//获取焦点时弹出软键盘
 						@Override
 						public void onFocusChange(View arg0, boolean arg1) {
-							InputMethodManager inputMgr = (InputMethodManager)context.
-                                    getSystemService(Context.INPUT_METHOD_SERVICE);
 							inputMgr.toggleSoftInput(InputMethodManager.SHOW_FORCED,
 									InputMethodManager.HIDE_IMPLICIT_ONLY);
 							
 						}
 					});
-//					LayoutInflater inflater = context.getLayoutInflater();
-//				　　   View layout = inflater.inflate(R.layout.dialog,
-//				　　     (ViewGroup) findViewById(R.id.dialog));
-//					new AlertDialog.Builder(context).setTitle("自定义布局").setView(layout)
-//				　　     .setPositiveButton("确定", null)
-//				　　     .setNegativeButton("取消", null).show();
-					dialog.show();
-//					dialogLayout.setVisibility(View.VISIBLE);
+					new AlertDialog.Builder(context)
+						.setTitle("修改购买数量").setView(layout)
+						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								String num = ((EditText)layout.findViewById(R.id.cart_product_edittext)).getText().toString();
+								if(Integer.valueOf(num) < 1){//小于最小购买量
+									Toast.makeText(context, "购买数小于最小购买量。", Toast.LENGTH_SHORT).show();
+								}else if (Integer.valueOf(num) > 99){
+									Toast.makeText(context, "购买数大于最大购买量。", Toast.LENGTH_SHORT).show();
+								}else if(Integer.valueOf(num) != Integer.valueOf(data.get(pos).get("qty").toString())){
+									//TODO 收起键盘，更改列表页的对应商品数量
+									inputMgr.toggleSoftInput(InputMethodManager.SHOW_FORCED,
+											InputMethodManager.HIDE_IMPLICIT_ONLY);
+									String pId = data.get(pos).get("productId").toString();
+									String url = "/ajax/changeNum.do?format=true&ordersign=0&type=0&productId=" + pId + "&qty=" + num;
+									ChangeNumTask task = new ChangeNumTask();
+									task.execute(url, itemView, num);
+									
+								}
+							}
+						})
+						.setNegativeButton("取消", null).show(); 
 				}
 			});
-			/*
-			qtyView.setOnEditorActionListener(new TextView.OnEditorActionListener()   
-            {   
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event)   
-                {Log.d(TAG, "" + actionId);
-                    if (actionId == EditorInfo.IME_NULL)   
-                    {
-                    		//获取输入框的数值，发送请求
-                    		// /ajax/changeNum.do?format=true&ordersign=0&type=0&productId=?&qty=?
-                    		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    		imm.hideSoftInputFromWindow(v.getWindowToken(),0); 
-//                    		Log.d(TAG, v.getText().toString());
-                    		//此处需+判断是否是允许的数值
-                    		
-                    		cartItemQty = v.getText().toString();
-                    		cartItemId = data.get(position).get("productId").toString();
-                    		data.get(position).put("qty", cartItemQty);
-                    		
-                    		new Thread(new Runnable() {
-
-    							@Override
-    							public void run() {
-    								cartJson = HttpFactory.getHttp().getUrlContext(
-    										"/ajax/changeNum.do/?format=true&type=0&ordersign=0&productId="
-    												+ cartItemId + "&qty="
-    												+ cartItemQty, context);
-    								Log.d("修改商品数量", cartItemId + ":" + cartJson);
-    								adapter.data = getData();
-    								handler.post(new Runnable(){
-    				                    public void run() {
-    				                    	notifyDataSetChanged();
-    				                }
-    				            });
-    								
-
-    							}
-    						}).start();
-                    		
-                    		
-						
-                    }   
-                    return false;   
-                }   
-            }); 
-			*/
-			/*
-			qtyView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			  
-			  @Override public void onFocusChange(View v, boolean hasFocus) { 
-				  if(hasFocus) {
-//					  qtyView.setInputType(InputType.TYPE_CLASS_PHONE);
-					  Log.d("focus change", "" + hasFocus);
-					  InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-					  imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0); 
-					  
-				  }else {
-//					  InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//					  imm.hideSoftInputFromWindow(v.getWindowToken(),0); 
-				  } 
-			  } 		  
-			});
-			*/
+			
 
 			// 删除商品
 			deleteImageView.setTag(position);
@@ -335,7 +264,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					View itemView = (View) v.getParent();
-					String itemCurrentQty = ((EditText) (itemView
+					String itemCurrentQty = ((TextView) (itemView
 							.findViewById(R.id.cart_product_edittext)))
 							.getText().toString();
 					if (v.getId() == R.id.cart_product_minus) {// 数量减1
@@ -400,5 +329,42 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 		}
 
 		return data;
+	}
+	
+	//HTTP 更改商品的购买数量
+	class ChangeNumTask extends AsyncTask<Object, Integer, Boolean>{
+		String response;
+		Object params[];
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			this.params = params;
+			response = HttpFactory.getHttp().getRequest(params[0].toString(), context);
+			Log.d("修改商品数量", response);
+			//TODO 修改商品总数和金额
+			
+//			Intent intent = new Intent(context, ShoppingcartActivity.class);
+//			context.startActivity(intent);
+			if (response.length() > 0) {
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			if (result) {
+				((TextView)params[1]).setText(params[2].toString());
+				try {
+					JSONObject obj = new JSONObject(response);
+//					这里怎么更新列表页面？？？
+//					context.;
+//					obj.get("qty");
+//					obj.get("price");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
