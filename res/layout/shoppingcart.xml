@@ -54,7 +54,16 @@
             android:visibility="invisible"
             android:text="清空" />
 	</RelativeLayout>
-
+	
+    <!-- 商品列表加载中... -->
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="正在加载..."
+        android:gravity="center"
+        android:id="@+id/cart_list_loading"/>
+    
+    
     <!-- 购物车 总计-->
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -86,13 +95,7 @@
         
     </RelativeLayout>
     
-    <!-- 商品列表加载中... -->
-    <TextView 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="loading ..."
-        android:gravity="center"
-        android:id="@+id/cart_list_loading"/>
+    
     
     <!-- 购物车 详情 -->
     <RelativeLayout

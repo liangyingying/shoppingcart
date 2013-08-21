@@ -59,7 +59,7 @@ public class PatchByLoginStatus extends AsyncTask<String, Integer, Boolean>{
 			Log.d("登录状态", "没登录！！");
 			intent = new Intent();
 			intent.setClass(mContext, LoginActivity.class);
-			intent.putExtra("toActivity", mToActivity);
+			intent.putExtra("toActivity", mToActivity.getName());
 			mContext.startActivity(intent);
 			
 		}

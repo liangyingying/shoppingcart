@@ -87,14 +87,14 @@
 		    android:layout_height="wrap_content" 
 		    android:layout_weight="1"
 		    android:id="@+id/qq_login_button"
-		    android:text="QQ Login"/>
+		    android:text="QQ登录"/>
 
 		<Button
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1" 
 		    android:id="@+id/zfb_login_button"
-		    android:text="支付宝 Login"/>
+		    android:text="支付宝登录"/>
 
 	</LinearLayout>
 

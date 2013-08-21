@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -62,7 +63,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 	private EditText qtyView;
 	Map<Integer, String> mMapQty;//动态保存购物车中各商品的数量
 	Map<Integer, Boolean> mMapFocusMap;//记录当前获得焦点的编辑框，在软键盘弹出后调用getView()会使得编辑框失去焦点，手动设置焦点
-
+	private ListView viewGroup;
 	public CartListSimpleAdapter(Context context,
 			List<Map<String, Object>> data, int resource, String[] from,
 			int[] to) {
@@ -82,6 +83,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
+		viewGroup = (ListView)parent;
 		if (convertView == null) {
 			convertView = layoutinflater.inflate(this.resource, null);
 			viewHolder = new ViewHolder(convertView);
@@ -202,6 +204,7 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 							public void onClick(DialogInterface dialog, int which) {
 								// TODO Auto-generated method stub
 								String num = ((EditText)layout.findViewById(R.id.cart_product_edittext)).getText().toString();
+								
 								if(Integer.valueOf(num) < 1){//小于最小购买量
 									Toast.makeText(context, "购买数小于最小购买量。", Toast.LENGTH_SHORT).show();
 								}else if (Integer.valueOf(num) > 99){
@@ -211,9 +214,10 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 									inputMgr.toggleSoftInput(InputMethodManager.SHOW_FORCED,
 											InputMethodManager.HIDE_IMPLICIT_ONLY);
 									String pId = data.get(pos).get("productId").toString();
+									Log.d(pId + "更改成->", num);
 									String url = "/ajax/changeNum.do?format=true&ordersign=0&type=0&productId=" + pId + "&qty=" + num;
 									ChangeNumTask task = new ChangeNumTask();
-									task.execute(url, itemView, num);
+									task.execute(url, String.valueOf(pos), num);
 									
 								}
 							}
@@ -332,11 +336,11 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 	}
 	
 	//HTTP 更改商品的购买数量
-	class ChangeNumTask extends AsyncTask<Object, Integer, Boolean>{
+	class ChangeNumTask extends AsyncTask<String, Integer, Boolean>{
 		String response;
-		Object params[];
+		String params[];
 		@Override
-		protected Boolean doInBackground(Object... params) {
+		protected Boolean doInBackground(String... params) {
 			this.params = params;
 			response = HttpFactory.getHttp().getRequest(params[0].toString(), context);
 			Log.d("修改商品数量", response);
@@ -350,16 +354,25 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 			return false;
 		}
 		
+		/**
+		 * 根据返回局部更新对应的商品个数，和购物车总计
+		 * ==> 此处键盘由显示到隐藏，界面发生变化，listView必然重新加载。更新数据源。
+		 */
 		@Override
 		protected void onPostExecute(Boolean result){
+			View view = viewGroup.getChildAt(Integer.valueOf(params[1]) - viewGroup.getFirstVisiblePosition());
+			inputMgr.hideSoftInputFromInputMethod(view.getWindowToken(), 0);
+			data.get(Integer.valueOf(params[1])).put("qty", params[2]);
 			if (result) {
-				((TextView)params[1]).setText(params[2].toString());
+				
+				TextView theItem = (TextView)view.findViewById(R.id.cart_product_edittext);				
+				theItem.setText(params[2].toString());
 				try {
 					JSONObject obj = new JSONObject(response);
-//					这里怎么更新列表页面？？？
-//					context.;
-//					obj.get("qty");
-//					obj.get("price");
+					LinearLayout root = (LinearLayout)(viewGroup.getParent().getParent());
+					((TextView)(root.findViewById(R.id.cart_size))).setText("共" + obj.get("qty").toString() + "件");
+					((TextView)(root.findViewById(R.id.cart_value))).setText("￥" + obj.get("price").toString());
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

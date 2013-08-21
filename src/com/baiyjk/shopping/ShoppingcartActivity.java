@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class ShoppingcartActivity extends ListActivity {
 	private Button finishButton;
 	private CartListSimpleAdapter adapter;
 	private View checkoutButton;
+	private ListView ListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class ShoppingcartActivity extends ListActivity {
 		cartSizeTv = (TextView) findViewById(R.id.cart_size);
 		cartValueTv = (TextView) findViewById(R.id.cart_value);
 		checkoutButton = (View) findViewById(R.id.cart_checkout_button);
-
+		ListView = (ListView)findViewById(android.R.id.list);
 		//后退按钮
 		backButton.setOnClickListener(new OnClickListener() {			
 			@Override
