@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wish_product_url"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wish_product_id"
+        android:visibility="gone"/>
+    
+    <!-- 删除图标 -->
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/remove_subscription_52x54"
+        android:id="@+id/wish_product_delete"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"/>
+    
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:id="@+id/wish_product_image"
+        android:layout_toRightOf="@id/wish_product_delete"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/wish_product_image"
+        android:id="@+id/wish_product_name"
+        android:layout_margin="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wish_product_name" 
+        android:layout_toRightOf="@id/wish_product_image"
+        android:id="@+id/wish_product_price"
+        android:textColor="#FF0000"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"/>
+
+</RelativeLayout>

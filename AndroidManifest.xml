@@ -52,6 +52,10 @@
         <activity android:name="com.baiyjk.shopping.ReceiverActivity"></activity>
         <activity android:name="com.baiyjk.shopping.EditReceiverActivity"></activity>
         
+        <!-- 我的收藏，我的优惠券 -->
+        <activity android:name="com.baiyjk.shopping.WishActivity"></activity>
+        <activity android:name="com.baiyjk.shopping.CouponActivity"></activity>
+        
         <!-- QQ登录 appid=100507208 -->
         <activity
 	       android:name="com.tencent.tauth.AuthActivity"

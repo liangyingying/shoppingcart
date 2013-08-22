@@ -8,7 +8,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baiyjk.shopping.adapter.ProductDetaiViewPagerAdapter;
+import com.baiyjk.shopping.fragment.BottomFragment;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.model.Cart;
 import com.baiyjk.shopping.sqlite.MySqLiteHelper;
@@ -58,6 +62,7 @@ public class ProductDetailActivity extends Activity{
 	private Button backButton;
 	private Button cartButton;
 	
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -74,6 +79,12 @@ public class ProductDetailActivity extends Activity{
 		Log.d(TAG, "" + productId);
 		context = this;
 		initView();
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		BottomFragment fragment = new BottomFragment();
+		fragmentTransaction.add(R.id.fragment_container, fragment);
+		fragmentTransaction.commit();
 	}
 
 	private void initView(){

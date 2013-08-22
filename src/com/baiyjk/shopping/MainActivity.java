@@ -80,19 +80,20 @@ public class MainActivity extends ActivityGroup{
 
 					titlebar = (TextView)findViewById(R.id.titlebar);
 					((View)titlebar.getParent()).setVisibility(View.VISIBLE);
-					
+					titlebar.setText("登录");
 					sp = context.getSharedPreferences("baiyjk_preference", Context.MODE_PRIVATE);
 					Class redirectClass = LoginActivity.class;
-//					if (sp.getString(PHPSESSIONKEY, "").length() > 0) {
-//						redirectClass = AccountActivity.class;
-//					}
+					if (sp.getString(PHPSESSIONKEY, "").length() > 0) {
+						redirectClass = AccountActivity.class;
+						titlebar.setText("我的账户");
+					}
 					
 					container.addView(manager.startActivity(
 							"PAGE_3", 
 							new Intent(context, redirectClass).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 							.getDecorView());
 					
-					titlebar.setText("我的账户");
+					
 					Log.e("click tab", "click tab account");
 					break;
 

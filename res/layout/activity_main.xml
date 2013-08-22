@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#555754"
+    android:orientation="vertical" >
+
+    <Fragment
+        android:id="@+id/fragment_home"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        class="com.baiyjk.shopping.fragment.HomeFragment" />
+
+   <!--  <fragment
+        android:id="@+id/fragment_search"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        class="com.eoe.tampletfragment.fragment.SearchFragment" />
+
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        class="com.eoe.tampletfragment.fragment.SettingsFragment" /> -->
+
+    <com.baiyjk.shopping.fragment.FragmentIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#555754" />
+
+</LinearLayout>

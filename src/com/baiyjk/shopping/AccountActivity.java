@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.baiyjk.shopping.adapter.ProductDetaiViewPagerAdapter;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.utils.ImageLoader;
+import com.baiyjk.shopping.utils.PatchByLoginStatus;
 
 import android.R.integer;
 import android.app.Activity;
@@ -198,6 +199,8 @@ public class AccountActivity extends Activity {
 			public void onClick(View v) {
 				// TODO 我的收藏
 				Log.d("我的百洋", "我的收藏");
+				PatchByLoginStatus patch = new PatchByLoginStatus(mContext, WishActivity.class);
+				patch.patch();
 				
 			}
 		});
@@ -207,20 +210,23 @@ public class AccountActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Log.d("我的百洋", "我的收获地址");
-				Intent intent = new Intent(mContext, ReceiverActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(mContext, ReceiverActivity.class);
+//				startActivity(intent);
+				PatchByLoginStatus patch = new PatchByLoginStatus(mContext, ReceiverActivity.class);
+				patch.patch();
 			}
 		});
 
 		couponButton.setOnClickListener(new OnClickListener() {
 	
-		@Override
-		public void onClick(View v) {
-			// TODO 我的优惠券
-			Log.d("我的百洋", "我的优惠券");
-			
-		}
-});
+			@Override
+			public void onClick(View v) {
+				// TODO 我的优惠券
+				Log.d("我的百洋", "我的优惠券");
+				PatchByLoginStatus patch = new PatchByLoginStatus(mContext, CouponActivity.class);
+				patch.patch();
+			}
+		});
 	}
 	
 }

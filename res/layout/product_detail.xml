@@ -138,4 +138,17 @@
 
 		
 	</LinearLayout>
+	
+	<!-- 底部导航 -->
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/fragment_container"
+	    >
+		<fragment 
+		    android:name="com.baiyjk.shopping.fragment.BottomFragment"
+		    android:id="@+id/product_detail_fragment" 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"/>
+	</RelativeLayout>
 </LinearLayout>

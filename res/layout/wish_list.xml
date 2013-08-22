@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- 我的收藏 titlebar -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#2F7D6D" >
+
+        <!-- <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wish_back"
+            android:layout_alignParentLeft="true" 
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/back"
+            android:layout_centerVertical="true"/> -->
+             
+        <TextView
+            android:id="@+id/wish_titlebar" 
+            android:layout_width="wrap_content" 
+            android:layout_height="40dip" 
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#FFFFFFFF"
+            android:text="我的收藏"
+            android:textSize="24sp"/> 
+
+	</RelativeLayout>
+	
+    <!-- 商品列表加载中... -->
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="正在加载..."
+        android:gravity="center"
+        android:id="@+id/wish_list_loading"/>
+    
+    <ListView
+		android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:id="@id/android:list">
+	</ListView>
+
+</LinearLayout>
