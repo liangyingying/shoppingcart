@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baiyjk.shopping.adapter.ProductDetaiViewPagerAdapter;
-import com.baiyjk.shopping.fragment.BottomFragment;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.model.Cart;
 import com.baiyjk.shopping.sqlite.MySqLiteHelper;
@@ -79,12 +78,12 @@ public class ProductDetailActivity extends Activity{
 		Log.d(TAG, "" + productId);
 		context = this;
 		initView();
-		
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		BottomFragment fragment = new BottomFragment();
-		fragmentTransaction.add(R.id.fragment_container, fragment);
-		fragmentTransaction.commit();
+//		
+//		FragmentManager fragmentManager = getFragmentManager();
+//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//		BottomFragment fragment = new BottomFragment();
+//		fragmentTransaction.add(R.id.fragment_container, fragment);
+//		fragmentTransaction.commit();
 	}
 
 	private void initView(){

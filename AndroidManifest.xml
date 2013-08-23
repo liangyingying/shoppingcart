@@ -23,7 +23,7 @@
             android:name="com.baiyjk.shopping.BottomNavigationTabhostAvtivity">
             
         </activity>
-        <activity android:name="com.baiyjk.shopping.MainActivity">
+        <activity android:name="com.baiyjk.shopping.MainNewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
