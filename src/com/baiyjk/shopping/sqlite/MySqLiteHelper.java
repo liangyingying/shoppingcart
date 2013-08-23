@@ -1,18 +1,27 @@
 package com.baiyjk.shopping.sqlite;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class MySqLiteHelper extends SQLiteOpenHelper{
 
-	private static final String DATABASE_NAME = "byjk.db"; //数据库名称
+	private static final String DB_NAME = "byjk.db"; //数据库名称
+	private static final String DB_PATH = "/data/data/com.baiyjk.shopping/database/";
 	private static final int DATABASE_VERSION = 1;//数据库版本
 
-	private static final String SQL_CREATE_CART =
-		    "CREATE TABLE CART (USER_ID INTEGER,  PRODUCT_ID INTEGER, PRODUCT_NUMBER INTEGER )";
-	private Context context;
+//	private static final String SQL_CREATE_CART =
+//		    "CREATE TABLE CART (USER_ID INTEGER,  PRODUCT_ID INTEGER, PRODUCT_NUMBER INTEGER )";
+	private static final String SQL_CREATE_CATEGOTY = 
+			"CREATE TABLE CATEGORY(ID, NAME,PARENT_ID,ATTRIBUTE_SET_ID,POSITION,CAT_LEVEL)";
+	private Context mContext;
 	private SQLiteDatabase db;
 	private CursorFactory factory;
 	
@@ -20,18 +29,52 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 			int version) {
 		super(context, dbName, factory, version);
 		// TODO Auto-generated constructor stub
-		this.context = context;
+		this.mContext = context;
 		this.factory = factory;
 	}
 	
 	public MySqLiteHelper(Context context){
-		super(context, DATABASE_NAME, null, DATABASE_VERSION); 
+		super(context, DB_NAME, null, DATABASE_VERSION); 
 	}
 
+    
+    /**
+     * 将分类数据从assets目录读出写入数据库
+     * @throws IOException
+     */
+    private void copyCategory() throws IOException{
+    		String sourceData = "categoryID.txt";
+	    	InputStream is = mContext.getAssets().open(sourceData);
+		BufferedReader in = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+	    String reader = "";
+	    while ((reader = in.readLine()) != null)
+	    {
+	        String[] RowData = reader.split(",");
+	//        this.createContact(RowData[0], RowData[1], RowData[2], RowData[3], RowData[4], RowData[5]);
+	        String sql = "insert into CATEGORY(ID, NAME,PARENT_ID,ATTRIBUTE_SET_ID,POSITION,CAT_LEVEL) values('" +
+	        		RowData[0] + "','" + RowData[1] + "','" + RowData[2] + "','" + 
+	        		RowData[3] + "','" + RowData[4] + "','" + RowData[5] + "')";
+	        db.execSQL(sql);
+	    }
+	    
+	    in.close();
+    }
+    
+    /**
+     * 只有在初次使用数据库时自动调用一次
+     * 创建分类表，并插入数据；
+     * @param db
+     */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL(SQL_CREATE_CART);
+		db.execSQL(SQL_CREATE_CATEGOTY);
+		try {
+			copyCategory();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -46,7 +89,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 		db = super.getWritableDatabase();
 		if (db == null) {
 //			return context.openOrCreateDatabase(DATABASE_NAME , Context.MODE_PRIVATE , null );
-			return SQLiteDatabase.openOrCreateDatabase(DATABASE_NAME, factory);
+			return SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
 		}
 		return db;
 	}
@@ -56,7 +99,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 		db = super.getReadableDatabase();
 		if (db == null) {
 //			return context.openOrCreateDatabase(DATABASE_NAME , Context.MODE_PRIVATE , null );
-			return SQLiteDatabase.openOrCreateDatabase(DATABASE_NAME, factory);
+			return SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
 		}
 		return db;
 	}

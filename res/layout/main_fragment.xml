@@ -7,7 +7,7 @@
     <!-- titlebar -->
     <LinearLayout android:orientation="vertical"
         android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
+        android:layout_height="150dip" 
         android:id="@+id/head" 
         android:gravity="center"
         android:layout_weight="0.95"
@@ -23,35 +23,20 @@
             android:textSize="24sp"> 
         </TextView> 
 	</LinearLayout>
-	
-    <fragment  
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="1"
+	    android:id="@+id/fragement_container">
+	    <fragment  
         android:id="@+id/fragement_main"  
         android:name="com.baiyjk.shopping.fragment.HomeFragment"  
         android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"  
-        android:layout_weight="10" /> 
-  
-    <fragment  
-        android:id="@+id/fragement_category"  
-        android:name="com.baiyjk.shopping.fragment.CategoryFragment"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"  
-        android:layout_weight="10" />  
-  
-    <fragment  
-        android:id="@+id/fragement_account"  
-        android:name="com.baiyjk.shopping.fragment.AccountFragment"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"  
-        android:layout_weight="10" /> 
-      
-    <fragment  
-        android:id="@+id/fragement_cart"  
-        android:name="com.baiyjk.shopping.fragment.ShoppingcartFragment"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"  
-        android:layout_weight="10" />
-    
+        android:layout_height="fill_parent" 
+        android:tag="home" 
+         />
+	</LinearLayout>
+
 	<RadioGroup  
         android:id="@+id/tab_group"  
         android:layout_width="fill_parent"  

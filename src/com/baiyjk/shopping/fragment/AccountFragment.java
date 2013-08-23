@@ -57,7 +57,6 @@ public class AccountFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.account, container, false);
 		mContext = v.getContext();
 		initView(v);
@@ -149,6 +148,9 @@ public class AccountFragment extends Fragment{
 								for (int j = 0; j < allImages.length(); j++) {
 									allImagesUrl.add(allImages.get(j).toString());
 									ImageView iv = new ImageView(mContext);
+									LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);  
+									lp.setMargins(2, 1, 2, 1);
+									iv.setLayoutParams(lp);
 									imageLoader.DisplayImage(allImages.get(j).toString(), iv);
 									imagesContainer.addView(iv);
 								}

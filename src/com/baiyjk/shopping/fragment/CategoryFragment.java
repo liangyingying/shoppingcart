@@ -2,6 +2,7 @@ package com.baiyjk.shopping.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.baiyjk.shopping.MyRelativeLayout;
 import com.baiyjk.shopping.ProductsListActivity;
@@ -61,9 +62,6 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 		super.onCreate(savedInstanceState);	
 	}
 	
-
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -72,12 +70,9 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 		return v;
 	}
 
-
-
-
 	private void initView(View v){
-//		titlebar = (TextView)findViewById(R.id.titlebar);
-//		titlebar.setText("全部分类");
+		titlebar = (TextView)v.findViewById(R.id.titlebar);
+		titlebar.setText("全部分类");
 		
 		//绑定XML中的ListView，作为Item的容器 
 		relativeLayout =(RelativeLayout)v.findViewById(R.id.category_layout);
@@ -89,17 +84,18 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 		mContext = v.getContext();
 		dm = getResources().getDisplayMetrics();
 		
-		mGestureDetector = new GestureDetector(this);  
+		mGestureDetector = new GestureDetector(mContext, this);  
         mGestureDetector.setIsLongpressEnabled(false);
         
         
-		//生成动态数组，并且转载数据  
-	    String[] data = {"聪慧孕婴", "营养佳品", "中西药品", "隐形眼镜", "医疗器械"};
+		//生成动态数组，并且转载数据 
+        String[] categoryIds = {"101", "102", "106", "103", "104", "105"};
+	    String[] data = {"聪慧孕婴", "营养佳品", "中药养生", "中西药品", "美肤护颜", "医疗器械"};
 	    ArrayList<HashMap<String, Object>> mylist = new ArrayList<HashMap<String, Object>>(); 
-	    for(int i=0; i < data.length; i++)  
+	    for(int i=0; i < data.length; i++)
 	    {  
 	        HashMap<String, Object> map = new HashMap<String, Object>();
-	        map.put("ItemId", 1);
+	        map.put("ItemId", categoryIds[i]);
 	        map.put("ItemImage", R.drawable.baby);
 	        map.put("ItemTitle", data[i]);
 	        map.put("ItemText", data[i]);  
@@ -141,7 +137,8 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 				Log.e("click item", "click item" + arg2);
 				//此处初始化二级分类列表
 				if (!hasMaskedLevel1) {
-					displayLayout(0);
+					String selectedCategoryId = ((TextView)arg1.findViewById(R.id.item_id)).getText().toString();
+					displayLayout(0, selectedCategoryId);
 				}
 				
 			}
@@ -194,7 +191,9 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 		
 	}
 	
-    private void displayLayout(float distanceX){  
+    private void displayLayout(float distanceX, String selectedId){ 
+    		//TODO 实际上应该在此处根据父分类从数据库动态加载子类的分类
+    	
         DisplayMetrics dm = getResources().getDisplayMetrics();   
           
         // 滑出二级分类页面  
