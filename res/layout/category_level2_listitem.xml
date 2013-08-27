@@ -8,12 +8,16 @@
             android:layout_height="wrap_content" 
             android:id="@+id/level2_item_id"
             android:visibility="invisible"></TextView>
-        
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:id="@+id/level2_item_display_id"
+            android:visibility="gone"></TextView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        
+        android:gravity="center_vertical"
         android:textSize="20sp" 
         android:id="@+id/level2_item_name"/>
-
+	
 </LinearLayout>
