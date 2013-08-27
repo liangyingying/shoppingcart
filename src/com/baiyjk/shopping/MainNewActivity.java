@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
 public class MainNewActivity extends FragmentActivity{
 //	private Fragment[] mFragments;  
@@ -38,12 +39,15 @@ public class MainNewActivity extends FragmentActivity{
 	private Fragment currentFragment;
 	private SQLiteOpenHelper dbHelper;
 	private Context mContext;
+	private TextView titlebar;
     
 	@Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         requestWindowFeature(Window.FEATURE_NO_TITLE);  
-        setContentView(R.layout.main_fragment);  
+        setContentView(R.layout.main_fragment);
+        
+        titlebar = (TextView)findViewById(R.id.titlebar);
 //        mFragments = new Fragment[4];
         mContext = this;
         mFragmentManager = getSupportFragmentManager(); 
@@ -86,6 +90,7 @@ public class MainNewActivity extends FragmentActivity{
                 			mFragmentTransaction.hide(currentFragment).show(mFragment).commit();
                 			currentFragment = mFragment;
                 		} 
+                		titlebar.setText("百洋健康网");
                     Log.d("on click", "首页");
                     break;  
   
@@ -101,6 +106,7 @@ public class MainNewActivity extends FragmentActivity{
 						}
 						currentFragment = mFragment;
 					}
+                		titlebar.setText("全部分类");
                     Log.d("on click", "分类");
                     break;  
   
@@ -116,6 +122,7 @@ public class MainNewActivity extends FragmentActivity{
 						}
 						currentFragment = mFragment;
 					}
+	            		titlebar.setText("我的白洋");
                     Log.d("on click", "我的百洋");
                     break;  
   
@@ -131,6 +138,7 @@ public class MainNewActivity extends FragmentActivity{
 						}
 						currentFragment = mFragment;
 					}
+	            		titlebar.setText("购物车");
                 		Log.d("on click", "购物车");
                 		break;
                 default:  

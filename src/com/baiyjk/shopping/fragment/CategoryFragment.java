@@ -9,6 +9,8 @@ import com.baiyjk.shopping.ProductsListActivity;
 import com.baiyjk.shopping.R;
 import com.baiyjk.shopping.CategoryActivity.SlideMenu;
 import com.baiyjk.shopping.MyRelativeLayout.OnScrollListener;
+import com.baiyjk.shopping.model.Category;
+import com.baiyjk.shopping.sqlite.CategoryDbManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -71,8 +73,8 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 	}
 
 	private void initView(View v){
-		titlebar = (TextView)v.findViewById(R.id.titlebar);
-		titlebar.setText("全部分类");
+//		titlebar = (TextView)v.findViewById(R.id.titlebar);
+//		titlebar.setText("全部分类");
 		
 		//绑定XML中的ListView，作为Item的容器 
 		relativeLayout =(RelativeLayout)v.findViewById(R.id.category_layout);
@@ -88,9 +90,9 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
         mGestureDetector.setIsLongpressEnabled(false);
         
         
-		//生成动态数组，并且转载数据 
+		//一级分类 
         String[] categoryIds = {"101", "102", "106", "103", "104", "105"};
-	    String[] data = {"聪慧孕婴", "营养佳品", "中药养生", "中西药品", "美肤护颜", "医疗器械"};
+	    String[] data = {"聪慧孕婴", "营养佳品", "中药养生", "中西药品", "美肤护颜", "健康生活"};
 	    ArrayList<HashMap<String, Object>> mylist = new ArrayList<HashMap<String, Object>>(); 
 	    for(int i=0; i < data.length; i++)
 	    {  
@@ -109,26 +111,7 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 	    
 	    listView1.setAdapter(adapter);
 	    
-	  //生成动态数组，并且转载数据  
-	    String[] data2 = {"宝宝营养", "孕产妇护理", "宝宝护理", "口腔护理", "孕产妇营养", "科学备孕", "产后调理", "孕产妇美肤","item3","item4","item5","item6","item7","item8"};
-	    ArrayList<HashMap<String, Object>> mylist2 = new ArrayList<HashMap<String, Object>>(); 
-	    for(int i=0; i < data2.length; i++)  
-	    {  
-	        HashMap<String, Object> map2 = new HashMap<String, Object>();
-	        map2.put("ItemId", 1);
-	        map2.put("ItemName", data2[i]); 
-	        mylist2.add(map2);  
-	    }
-	    
-	    SimpleAdapter adapter2 = new SimpleAdapter(mContext, mylist2, 
-	    		R.layout.category_level2_listitem, 
-	    		new String[] {"ItemId", "ItemName"}, 
-	    		new int[] {R.id.level2_item_id, R.id.level2_item_name});
-	    
-	    listView2.setAdapter(adapter2);
-	    
-	    //一级分类点击事件
-	    
+	    //一级分类点击事件	    
 	    listView1.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -174,26 +157,76 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
 	    listView2.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View v, int position,
 					long arg3) {
 				Intent intent = new Intent(mContext, ProductsListActivity.class);
+				
+				String id = ((TextView)v.findViewById(R.id.level2_item_id)).getText().toString();
+				String displayId = ((TextView)v.findViewById(R.id.level2_item_display_id)).getText().toString();
+				String url = getUrl(id, displayId);
+				Log.d("商品列表页", url);
+				intent.putExtra("url", url);
 				startActivity(intent);
 				
 			}
 		});
 	}
-	/**
-	 * 渲染分类Layout.数据从数据库读取，包括分类ID，分类名，分类说明，分类图片，母分类ID。
-	 * @param categoryId
-	 */
-	private void renderView(int categoryId, int listviewId){
-		//TODO 根据分类&ListViewId渲染Layout
-		
+	
+	//TODO 木有分页；
+	private String getUrl(String categoryId, String displayId){
+		String url = "";
+		switch (categoryId.charAt(2)) {
+		case '1':
+			url = "/conghuiyunying";
+			break;
+		case '2':
+			url = "/yingyangjiapin";
+			break;
+		case '3':
+			url = "/zhongxiyaopin";
+			break;
+		case '4':
+			url = "/meifuhuyan";
+			break;
+		case '5':
+			url = "/jiankangshenghuo";
+			break;
+		case '6':
+			url = "/zhongyaoyangsheng";
+			break;
+		default:
+			url = "/conghuiyunying";
+			break;
+		}
+		url += "/sort-" + displayId;
+		return url;
 	}
+	//动态加载二级分类
+    private void loadCategories(String selectedId){
+    		CategoryDbManager dbManager = new CategoryDbManager(mContext);
+    		List<Category> list = dbManager.querySubCategory(selectedId);
+    		
+    	    ArrayList<HashMap<String, Object>> mylist2 = new ArrayList<HashMap<String, Object>>(); 
+    	    for(int i=0; i < list.size(); i++)  
+    	    {  
+    	        HashMap<String, Object> map2 = new HashMap<String, Object>();
+    	        map2.put("ItemId", list.get(i).categoryId);
+    	        map2.put("ItemName", list.get(i).name);
+    	        map2.put("ItemDisplayId", list.get(i).displayId);
+//    	        Log.d("from table category", list.get(i).categoryId + ":" + list.get(i).name);
+    	        mylist2.add(map2);  
+    	    }
+    	    SimpleAdapter adapter2 = new SimpleAdapter(mContext, mylist2, 
+    	    		R.layout.category_level2_listitem, 
+    	    		new String[] {"ItemId", "ItemName", "ItemDisplayId"}, 
+    	    		new int[] {R.id.level2_item_id, R.id.level2_item_name, R.id.level2_item_display_id});
+    	    
+    	    listView2.setAdapter(adapter2);
+    }
 	
     private void displayLayout(float distanceX, String selectedId){ 
-    		//TODO 实际上应该在此处根据父分类从数据库动态加载子类的分类
-    	
+    		
+    		loadCategories(selectedId);
         DisplayMetrics dm = getResources().getDisplayMetrics();   
           
         // 滑出二级分类页面  
@@ -256,7 +289,7 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
         RelativeLayout.LayoutParams lp2 = (LayoutParams) listViewContainer2.getLayoutParams();        
         int minMargin = -dm.widthPixels + 200;//第一级分类完全遮盖住时第二级分类的leftMargin值 = -520
         
-        if(lp2.leftMargin >= minMargin/2){ // 第二级分类显示不到一半，缩回去。  
+        if(lp2.leftMargin >= minMargin/3){ // 第二级分类显示不到1/3，缩回去。  
             new SlideMenu().execute(Math.abs(lp2.leftMargin), SPEED);
             Log.d(TAG, "第二级分类缩回去，lp2.leftMargin=" + lp2.leftMargin);
             listView1.setDivider(divider);
