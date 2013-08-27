@@ -56,7 +56,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
      * @throws IOException
      */
     private void copyCategory() throws IOException{
-    		String sourceData = "categoryID(2).txt";
+    		String sourceData = "categoryID_2.txt";
     		Log.d("copyCategory", mContext.toString());
 	    	InputStream is = mContext.getAssets().open(sourceData);
 		BufferedReader in = new BufferedReader(new InputStreamReader(is, "UTF-8"));
