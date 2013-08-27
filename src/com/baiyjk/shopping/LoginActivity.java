@@ -110,8 +110,8 @@ public class LoginActivity extends Activity {
 		                		super.doComplete(values);
 //		                    updateLoginButton();
 		                		Log.d("QQ登录", values.toString());
-		                		mTencent.requestAsync(Constants.GRAPH_SIMPLE_USER_INFO, null,
-		                        Constants.HTTP_GET, new BaseApiListener("get_simple_userinfo", false), null);
+		                		mTencent.requestAsync(Constants.GRAPH_USER_INFO, null,
+		                        Constants.HTTP_GET, new BaseApiListener("get_user_info", false), null);
 		                }
 		            };
 		            mTencent.login(mActivity, SCOPE, listener);
