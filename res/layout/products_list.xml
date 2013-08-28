@@ -41,9 +41,16 @@
 		    android:src="@drawable/shoppingcart" />
 
 	</RelativeLayout>
-
+	
+	<!-- 商品列表加载中... -->
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="loading ..."
+        android:gravity="center"
+        android:id="@+id/productlistloading"/>
+    
     <!-- 商品列表页排序 -->
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
@@ -51,7 +58,7 @@
 		<LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	        android:id="@+id/pricesort"
+	        android:id="@+id/product_sortby_price"
 	        android:layout_weight="1"
 	        android:orientation="horizontal">
 	        <TextView
@@ -72,24 +79,26 @@
 		<LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:id="@+id/product_sortby_sales"
 	        android:layout_weight="1" 
 	        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:text="销量"/>
-        <ImageView 
+	        <TextView
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/desc_sort"
-	            android:layout_gravity="center_vertical"/>
+	            android:layout_height="wrap_content" 
+	            android:textSize="15sp"
+	            android:gravity="center_horizontal"
+	            android:text="销量"/>
+	        <ImageView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/desc_sort"
+		            android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
 		<LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_sortby_time"
 	        android:layout_weight="1"
 	        android:orientation="horizontal">
         <TextView
@@ -108,6 +117,7 @@
 		<LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:id="@+id/product_sortby_wish"
 	        android:layout_weight="1" 
 	        android:orientation="horizontal">
         <TextView
@@ -125,19 +135,17 @@
 
     </LinearLayout>
     
-    <!-- 商品列表 -->
-    <!-- 商品列表加载中... -->
-    <TextView 
+    <!-- 商品列表 -->    
+    <com.baiyjk.shopping.adapter.PullToRefreshListView 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="loading ..."
-        android:gravity="center"
-        android:id="@+id/productlistloading"/>
-    
-    <ListView
+        android:layout_height="wrap_content" 
+        android:id="@id/android:list">
+        
+    </com.baiyjk.shopping.adapter.PullToRefreshListView>
+    <!-- <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:id="@id/android:list">
 
-	</ListView>
+	</ListView> -->
 </LinearLayout>

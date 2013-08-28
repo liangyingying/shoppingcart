@@ -6,6 +6,7 @@ import java.util.Map;
 import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class ProdListSimpleAdapter extends SimpleAdapter{
 	private int resource;
 	private View myView;
 	private Context context;
-	private List<Map<String, Object>> data;
+	public List<Map<String, Object>> data;
 	private final String TAG = "CustomSimpleAdapter";
 	private String productID;
 	private String productUrl;
@@ -43,6 +44,12 @@ public class ProdListSimpleAdapter extends SimpleAdapter{
 		this.layoutinflater = LayoutInflater.from(context);
 	}
 	
+	@Override
+	public void registerDataSetObserver(DataSetObserver observer) {
+		// TODO Auto-generated method stub
+		super.registerDataSetObserver(observer);
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
 //		Log.d(TAG, "" + this.resource);

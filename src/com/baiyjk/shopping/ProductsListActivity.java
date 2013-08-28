@@ -14,6 +14,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -25,7 +26,7 @@ import android.widget.TextView;
 import com.baiyjk.shopping.adapter.ProdListSimpleAdapter;
 import com.baiyjk.shopping.http.HttpFactory;
 
-public class ProductsListActivity extends ListActivity implements OnScrollListener{
+public class ProductsListActivity extends ListActivity implements OnScrollListener, OnClickListener{
 	private TextView mTv;
 	private Context context;
 	private final String TAG = "products_list";
@@ -35,12 +36,18 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 	private View mBack;
 	private View mFilterButton;
 	private String url;//e.g /conghuiyunying/sort-1059-3-2
-	private boolean loadingMore;
+	private boolean loadingMore = false;
 	private String page;//sort-displayId-order-page，
 	private String orderBy;//按销量降序1，按价格升序2，按价格降序3，按关注降序4，按上架时间降序5
-	private int nextPage;
+	private String nextPage;
 	private String displayId;
 	private String seoName;
+	private ListView mListView;
+	private List<Map<String, Object>> list;
+	private View priceSort;
+	private View salesSort;
+	private View timeSort;
+	private View wishSort;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -49,14 +56,14 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		Intent intent = getIntent();
 		url = intent.getStringExtra("url");
 		
-		initUrlParam(url);
+//		initUrlParam(url); 下一页的url从服务器端获取，不再解析
 		initView();
 	}
 	
 	private void initUrlParam(String url) {
 		String [] urlArr = url.split("/");
-		seoName = urlArr[0];
-		String[] params= urlArr[1].split("-");
+		seoName = urlArr[1];
+		String[] params= urlArr[2].split("-");Log.d(TAG, params[0] + params.length);
 		displayId = params[1];
 		if (params.length > 2) {
 			orderBy = params[2];
@@ -70,6 +77,20 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		mTv = (TextView)findViewById(R.id.productlistloading);
 		mBack = findViewById(R.id.product_list_back);
 		mFilterButton = findViewById(R.id.product_list_filter);
+		mListView = (ListView)findViewById(android.R.id.list);
+		//注册上拉到底部加载更多事件
+		mListView.setOnScrollListener(this);
+		
+		//初始化排序View
+		priceSort = findViewById(R.id.product_sortby_price);
+		salesSort = findViewById(R.id.product_sortby_sales);
+		timeSort = findViewById(R.id.product_sortby_time);
+		wishSort = findViewById(R.id.product_sortby_wish);
+		//注册点击排序时间
+		priceSort.setOnClickListener(this);
+		salesSort.setOnClickListener(this);
+		timeSort.setOnClickListener(this);
+		wishSort.setOnClickListener(this);
 		
 		//后退按钮
 		mBack.setOnClickListener(new OnClickListener() {			
@@ -78,7 +99,7 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 				finish();
 			}
 		});
-		
+		//加载商品数据
 		context = this;
 		new Thread(new Runnable() {
             
@@ -111,47 +132,47 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		int lastInScreen = firstVisibleItem + visibleItemCount;
-		if((lastInScreen >= totalItemCount) && !(loadingMore)){
-			Thread thread =  new Thread(null, loadMoreListItems);
+		if(totalItemCount > 0 && (lastInScreen >= totalItemCount) && !loadingMore){
+			Log.d(TAG, "load more");
+			Thread thread =  new Thread(null, new Runnable() {
+				
+				@Override
+				public void run() {
+					loadingMore = true;
+					if (!nextPage.equals("null")) {
+						url = nextPage + "?format=true";
+//						nextPage = Integer.valueOf(page) + 1;
+//						url = "/" + seoName + "/sort-" + displayId + "-" + orderBy + "-" + nextPage + "/?format=true";
+						productsJsonString = null;
+						productsJsonString = HttpFactory.getHttp().getRequest(url, context);  
+						//更多商品更新到UI
+						runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								Log.d(TAG, productsJsonString);
+								if(productsJsonString != null){
+									adapter.data.addAll(getData());
+					                adapter.notifyDataSetChanged();
+					                loadingMore = false;
+					                
+					            }else  {
+					                //没有更多商品了
+					            		loadingMore = true;
+					            }
+							}
+						});
+					}else {
+						//已经是最后一页啦
+						loadingMore = true;
+					}
+										
+				}
+			});
 			thread.start();
+			
 		}
 	}
-
-	//上拉加载更多商品
-	private Runnable loadMoreListItems = new Runnable() {
-		
-		@Override
-		public void run() {
-			loadingMore = true;
-			nextPage = Integer.valueOf(page) + 1;
-			url += "/" + seoName + "/sort-" + displayId + "-" + orderBy + "-" + nextPage + "/?format=true";
-			productsJsonString = null;
-			productsJsonString = HttpFactory.getHttp().getRequest(url, context);  
-            runOnUiThread(updateAdapter);
-		}
-	};
-	
-	//更多商品更新到UI
-	private Runnable updateAdapter = new Runnable() {
-		@Override
-		public void run() {
-			if(productsJsonString != null){ 
-//				adapter.add();
-//                ProdListSimpleAdapter adapter = new ProdListSimpleAdapter(context, getData(), R.layout.product_item, 
-//                		new String[]{"url", "name", "info", "price","image"},
-//                		new int[] {R.id.list_product_url, R.id.list_product_name, R.id.list_product_info, R.id.list_product_price, R.id.list_product_image}
-//                );
-//                
-//                setListAdapter(adapter);
-                loadingMore = false;
-                page = String.valueOf(nextPage);
-//                Log.d(TAG, strContext);
-            }else  {
-                //没有更多商品了
-            	 	
-            }
-		}
-	};
 	
 	@Override
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {
@@ -162,7 +183,13 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		try{
-			JSONArray productsJasonArray = new JSONArray(productsJsonString);
+			JSONArray productsJasonArray = new JSONObject(productsJsonString).getJSONArray("products");
+			nextPage = new JSONObject(productsJsonString).getString("nextPage");
+			priceSort.setTag(new JSONObject(productsJsonString).getString("priceSortUrl"));
+			salesSort.setTag(new JSONObject(productsJsonString).getString("salesSortUrl"));
+			timeSort.setTag(new JSONObject(productsJsonString).getString("timeSortUrl"));
+			wishSort.setTag(new JSONObject(productsJsonString).getString("wishSortUrl"));
+			
 			for (int i = 0; i < productsJasonArray.length(); i++) {
 //				Log.d(TAG, productsJasonArray.getJSONObject(i).toString());
 				JSONObject productJsonObeject = new JSONObject(productsJasonArray.getJSONObject(i).toString());
@@ -186,6 +213,16 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		return list;
 	}
 
-	
-	
+	/**
+	 * 点击排序
+	 */
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		String url = v.getTag().toString();
+		Intent intent = new Intent(this, ProductsListActivity.class);
+		intent.putExtra("url", url);
+		startActivity(intent);
+	}
+
 }

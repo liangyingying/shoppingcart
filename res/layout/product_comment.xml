@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#2F7D6D" >
+
+		<ImageView
+		    android:id="@+id/product_comment_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+		    android:layout_marginLeft="8dp"
+		    android:layout_centerVertical="true"
+		    android:src="@drawable/back" />
+        		          
+        <TextView
+            android:id="@+id/product_comment_titlebar" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="商品评价"
+            android:textColor="#FFFFFFFF"           
+            android:textSize="24sp" />
+	</RelativeLayout>
+
+    <!-- 评价列表 -->
+    <!-- 评价列表加载中... -->
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="loading ..."
+        android:gravity="center"
+        android:id="@+id/product_comment_loading"/>
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:id="@id/android:list">
+
+	</ListView>
+</LinearLayout>

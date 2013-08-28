@@ -28,7 +28,8 @@
     <string name="myorders">我的订单</string>
     <string name="order_detail">订单详情</string>
     <string name="go_to_comment">去评价</string>
-    
+    <string name="pull_up_to_refresh_label">正在加载更多...</string>
+	<string name="pull_up_to_refresh_failed_label">加载失败，点击重试:(</string>
     <string name="select_province">请选择省/市</string>
     <string name="select_city">请选择城市</string>
     <string name="select_area">请选择区/县</string>
