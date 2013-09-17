@@ -39,7 +39,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 	public MySqLiteHelper(Context context){
 		super(context, DB_NAME, null, DATABASE_VERSION); 
 		this.mContext = context;
-//		db = super.getWritableDatabase();
+		db = getWritableDatabase();
 //		db.execSQL(SQL_DROP_CATEGOTY);
 //		db.execSQL(SQL_CREATE_CATEGOTY);
 //		try {
@@ -51,11 +51,19 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 	}
 
     
-    /**
+    public SQLiteDatabase getDb() {
+		return db;
+	}
+
+	public void setDb(SQLiteDatabase db) {
+		this.db = db;
+	}
+
+	/**
      * 将分类数据从assets目录读出写入数据库
      * @throws IOException
      */
-    private void copyCategory() throws IOException{
+    private void copyCategory(SQLiteDatabase db) throws IOException{
     		String sourceData = "categoryID_2.txt";
     		Log.d("copyCategory", mContext.toString());
 	    	InputStream is = mContext.getAssets().open(sourceData);
@@ -89,7 +97,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 		Log.d("create table", "category");
 		db.execSQL(SQL_CREATE_CATEGOTY);
 		try {
-			copyCategory();
+			copyCategory(db);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +116,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 		db = super.getWritableDatabase();
 		if (db == null) {
 //			return context.openOrCreateDatabase(DATABASE_NAME , Context.MODE_PRIVATE , null );
-			return SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
+			db = SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
 		}
 		return db;
 	}
@@ -118,7 +126,7 @@ public class MySqLiteHelper extends SQLiteOpenHelper{
 		db = super.getReadableDatabase();
 		if (db == null) {
 //			return context.openOrCreateDatabase(DATABASE_NAME , Context.MODE_PRIVATE , null );
-			return SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
+			db = SQLiteDatabase.openOrCreateDatabase(DB_NAME, factory);
 		}
 		return db;
 	}

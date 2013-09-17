@@ -54,7 +54,7 @@
 		        android:singleLine="true"
 		        android:inputType="phone"
 		        android:gravity="center_horizontal"
-		        
+		        android:imeOptions="actionDone"
 		        android:textSize="14sp"/>
 			
 			<TextView

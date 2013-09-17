@@ -14,7 +14,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.drm.DrmStore.Action;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,7 +36,7 @@ import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.model.Cart;
 import com.baiyjk.shopping.sqlite.MySqLiteHelper;
 
-public class ProductDetailActivity extends Activity{
+public class ProductDetailActivity extends Activity implements OnClickListener{
 	private String productUrl;
 	private String productDetailJson;
 	private final String TAG = "product detail page";
@@ -46,7 +48,7 @@ public class ProductDetailActivity extends Activity{
 	private Button addToWishButton;
 	private Button shareButton;
 	
-	private Context context;
+	private Context mContext;
 	private LinearLayout dotContainer;
 	private View dot;
 	private int currentIndex = 0;
@@ -60,6 +62,9 @@ public class ProductDetailActivity extends Activity{
 	private final int MSG_FAILURE = 0;
 	private Button backButton;
 	private Button cartButton;
+	private TextView marketpriceTextView;
+	private View infoView;
+	private View commentsView;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -76,7 +81,7 @@ public class ProductDetailActivity extends Activity{
 			productId = Integer.parseInt(m.group());
 		}
 		Log.d(TAG, "" + productId);
-		context = this;
+		mContext = this;
 		initView();
 //		
 //		FragmentManager fragmentManager = getFragmentManager();
@@ -96,6 +101,10 @@ public class ProductDetailActivity extends Activity{
 		nameTextView = (TextView)findViewById(R.id.product_detail_name);
 		descTextView = (TextView)findViewById(R.id.product_detail_desc);
 		priceTextView = (TextView)findViewById(R.id.product_detail_price);
+		marketpriceTextView = (TextView)findViewById(R.id.product_detail_market_price);
+		marketpriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );//加中划线
+		infoView = findViewById(R.id.product_detail_info);//查看商品详情
+		commentsView = findViewById(R.id.product_detail_comments);//查看用户评价
 		
 		addToCartButton = (Button)findViewById(R.id.add_to_cart);
 		addToWishButton = (Button)findViewById(R.id.add_to_wish);
@@ -114,15 +123,15 @@ public class ProductDetailActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent();
 //				intent.putExtra("url", ((TextView)(v.findViewById(R.id.list_product_url))).getText().toString());
-				intent.setClass(context, ShoppingcartActivity.class);
-				context.startActivity(intent);
+				intent.setClass(mContext, ShoppingcartActivity.class);
+				mContext.startActivity(intent);
 			}
 		});
 		
 		myCartNumber = (TextView)findViewById(R.id.product_detail_cart_number);
 		//头部显示购物车商品数量。如果是已登录用户，更新UserId；
 		myCart = new Cart(userId);
-		myCart.setDbHelper(new MySqLiteHelper(context));
+		myCart.setDbHelper(new MySqLiteHelper(mContext));
 //		int size = myCart.getCartSize(userId);
 //		if (size > 0)
 //			myCartNumber.setText("" + size);
@@ -137,7 +146,7 @@ public class ProductDetailActivity extends Activity{
 		            
 	        @Override  
 	        public void run() {
-		        	productDetailJson = HttpFactory.getHttp().getRequest("/" + productUrl + "/?format=true", context);
+		        	productDetailJson = HttpFactory.getHttp().getRequest("/" + productUrl + "/?format=true", mContext);
 //		        	productDetailJson = HttpFactory.getHttp().getUrlContext("/");
 //		        	Log.d(TAG, productDetailJson);
                 runOnUiThread(new Runnable() {                    
@@ -164,14 +173,14 @@ public class ProductDetailActivity extends Activity{
 								
 								//将图片URL转换成对应的ImageView	
 								mViewPager = (ViewPager)findViewById(R.id.product_detail_images_viewpager);  
-						        mViewPagerAdapter = new ProductDetaiViewPagerAdapter(context, allImagesUrl);  
+						        mViewPagerAdapter = new ProductDetaiViewPagerAdapter(mContext, allImagesUrl);  
 						        mViewPager.setAdapter(mViewPagerAdapter);
 						        
 						        //图片下方的圆点，切换图片对应的圆点高亮
 						        LayoutParams lp = dot.getLayoutParams();
 						        dotsList.add(dot);//xml文件中高亮的那个
 						        for (int i = 0; i < allImages.length() - 1; i++) {
-									View dotItem = new View(context, null);
+									View dotItem = new View(mContext, null);
 									dotItem.setLayoutParams(lp);
 									dotItem.setBackgroundResource(R.drawable.dot_normal);
 
@@ -247,7 +256,7 @@ public class ProductDetailActivity extends Activity{
 		            		String addCartUrl = "/addCart.do?qty=1&flag=false&productId=" + productId;
 						
 						//url = "/ajax/getCart.do" 包括content,qty两个字段；
-						String ret = HttpFactory.getHttp().getRequest(addCartUrl, context);
+						String ret = HttpFactory.getHttp().getRequest(addCartUrl, mContext);
 						Log.d(TAG, ret);
 						
 						try {
@@ -262,7 +271,7 @@ public class ProductDetailActivity extends Activity{
 				                public void run() {//run()方法会在ui线程执行  
 				                		try {
 											myCartNumber.setText("" + retJsonObject.getString("qty"));
-											Toast.makeText(context, "成功放入购物车", Toast.LENGTH_SHORT).show();
+											Toast.makeText(mContext, "成功放入购物车", Toast.LENGTH_SHORT).show();
 											//and 设置带气泡背景图
 										} catch (JSONException e) {
 											// TODO Auto-generated catch block
@@ -315,9 +324,16 @@ public class ProductDetailActivity extends Activity{
 	/**
 	 * 分享商品
 	 * 分享内容链接已经能取到，商品名和简要描述木有传过来
+	 * 只能分享到手机已经安装的应用。
+	 * 如果没有安装微博也能分享，需要申请key
 	 */
 	protected void share(){
-		
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");  //分享的数据类型  
+		intent.putExtra(Intent.EXTRA_SUBJECT, "subject");  //主题  
+		intent.putExtra(Intent.EXTRA_TEXT,  "content");  //内容 
+		intent.putExtra(Intent.EXTRA_STREAM, "此处放图片URI，全路径");
+		startActivity(Intent.createChooser(intent, "title"));  //目标应用选择对话框的标题  
 	}
 	
 	private Handler mHandler = new Handler() {  
@@ -330,9 +346,29 @@ public class ProductDetailActivity extends Activity{
                 break;  
   
             case MSG_FAILURE :  
-                Toast.makeText(context, "放入购物车失败", Toast.LENGTH_SHORT).show();  
+                Toast.makeText(mContext, "放入购物车失败", Toast.LENGTH_SHORT).show();  
                 break;  
             }  
         }  
     };
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.product_detail_comments) {
+			Intent intent = new Intent(mContext, ProductCommentActivity.class);
+			String url = "商品评价独立请求";
+			intent.putExtra("url", url);
+			startActivity(intent);
+		}
+		
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.baiyjk.shopping;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListAdapter;
@@ -13,12 +14,17 @@ import android.widget.ListView;
  */
 public class ProductCommentActivity extends ListActivity {
 
+	private String mUrl;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_comment);
+		Intent intent = getIntent();
+		mUrl = intent.getStringExtra("url");
 		ListView listView = (ListView)findViewById(android.R.id.list);
+		
 		
 	}
 	

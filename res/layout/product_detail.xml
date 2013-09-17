@@ -92,25 +92,84 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:id="@+id/product_detail_name"
+	    android:layout_margin="4dp"
 	    android:textSize="20sp"/>
 	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:id="@+id/product_detail_desc"
+	    android:layout_margin="4dp"
 	    android:textSize="12sp"/>
 	
-	<RelativeLayout
+	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+		
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="市场价:"/>
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	        android:id="@+id/product_detail_price"/>
+	        android:id="@+id/product_detail_market_price"/>
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="百洋价:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_price"
+	        android:textColor="#FF0000"/>
+
+	</LinearLayout>
+	
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/product_detail_info"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="商品详情:"/>
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:src="@drawable/back"/>
 
 	</RelativeLayout>
 	
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/product_detail_comments"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="用户评价:"/>
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:src="@drawable/back"/>
+
+	</RelativeLayout>
 	<!-- 加入购物车、 收藏、 分享 -->
 
 	<LinearLayout
@@ -140,7 +199,7 @@
 	</LinearLayout>
 	
 	<!-- 底部导航 -->
-	<RelativeLayout 
+	<!-- <RelativeLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:id="@+id/fragment_container"
@@ -150,5 +209,5 @@
 		    android:id="@+id/product_detail_fragment" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"/>
-	</RelativeLayout>
+	</RelativeLayout> -->
 </LinearLayout>

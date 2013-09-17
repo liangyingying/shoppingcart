@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +28,8 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 	private TextView mTv;
 	private Context context;
 	private final String TAG = "products_list";
-	private String productsJsonString;
+	private String responseJsonString;
+	private List<Map<String, Object>> attributesList;
 	private ProdListSimpleAdapter adapter;
 	private Map<String, Object> map;
 	private View mBack;
@@ -43,7 +42,6 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 	private String displayId;
 	private String seoName;
 	private ListView mListView;
-	private List<Map<String, Object>> list;
 	private View priceSort;
 	private View salesSort;
 	private View timeSort;
@@ -93,12 +91,10 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		wishSort.setOnClickListener(this);
 		
 		//后退按钮
-		mBack.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+		mBack.setOnClickListener(this);
+		//筛选按钮
+		mFilterButton.setOnClickListener(this);
+		
 		//加载商品数据
 		context = this;
 		new Thread(new Runnable() {
@@ -106,7 +102,7 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
             @Override  
             public void run() {
             		url += "/?format=true";
-                final String strContext = productsJsonString = HttpFactory.getHttp().getRequest(url, context);  
+                final String strContext = responseJsonString = HttpFactory.getHttp().getRequest(url, context);  
                 runOnUiThread(new Runnable() {                    
                     @Override  
                     public void run() {  
@@ -143,15 +139,15 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 						url = nextPage + "?format=true";
 //						nextPage = Integer.valueOf(page) + 1;
 //						url = "/" + seoName + "/sort-" + displayId + "-" + orderBy + "-" + nextPage + "/?format=true";
-						productsJsonString = null;
-						productsJsonString = HttpFactory.getHttp().getRequest(url, context);  
+						responseJsonString = null;
+						responseJsonString = HttpFactory.getHttp().getRequest(url, context);  
 						//更多商品更新到UI
 						runOnUiThread(new Runnable() {
 							
 							@Override
 							public void run() {
-								Log.d(TAG, productsJsonString);
-								if(productsJsonString != null){
+								Log.d(TAG, responseJsonString);
+								if(responseJsonString != null){
 									adapter.data.addAll(getData());
 					                adapter.notifyDataSetChanged();
 					                loadingMore = false;
@@ -179,50 +175,88 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 		// TODO Auto-generated method stub
 		
 	}
+	/**
+	 * 解析Http Response
+	 * @return
+	 */
 	private List<Map<String, Object>> getData(){
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> productsList = new ArrayList<Map<String, Object>>();
 		
 		try{
-			JSONArray productsJasonArray = new JSONObject(productsJsonString).getJSONArray("products");
-			nextPage = new JSONObject(productsJsonString).getString("nextPage");
-			priceSort.setTag(new JSONObject(productsJsonString).getString("priceSortUrl"));
-			salesSort.setTag(new JSONObject(productsJsonString).getString("salesSortUrl"));
-			timeSort.setTag(new JSONObject(productsJsonString).getString("timeSortUrl"));
-			wishSort.setTag(new JSONObject(productsJsonString).getString("wishSortUrl"));
+			JSONObject jsonObject = new JSONObject(responseJsonString);
+			JSONArray productsJsonArray = jsonObject.getJSONArray("products");
 			
-			for (int i = 0; i < productsJasonArray.length(); i++) {
-//				Log.d(TAG, productsJasonArray.getJSONObject(i).toString());
-				JSONObject productJsonObeject = new JSONObject(productsJasonArray.getJSONObject(i).toString());
+			nextPage = jsonObject.getString("nextPage");
+			priceSort.setTag(jsonObject.getString("priceSortUrl"));
+			salesSort.setTag(jsonObject.getString("salesSortUrl"));
+			timeSort.setTag(jsonObject.getString("timeSortUrl"));
+			wishSort.setTag(jsonObject.getString("wishSortUrl"));
+			//商品列表
+			for (int i = 0; i < productsJsonArray.length(); i++) {
+				JSONObject productJsonObject = productsJsonArray.getJSONObject(i);
 				map = new HashMap<String, Object>();
-				String urlString = productJsonObeject.get("main_first_category_seo_name").toString() + "/" + productJsonObeject.get("product_id") + ".html";
+				String urlString = productJsonObject.get("main_first_category_seo_name").toString() + "/" + productJsonObject.get("product_id") + ".html";
 				map.put("url", urlString);
 //				map.put("id", productJsonObeject.get("product_id"));
-				map.put("name", productJsonObeject.get("product_name"));
-				map.put("info", productJsonObeject.get("product_name_desc"));
-				map.put("price", "￥" + productJsonObeject.get("price"));
-				map.put("image", productJsonObeject.get("small_image"));
+				map.put("name", productJsonObject.get("product_name"));
+				map.put("info", productJsonObject.get("product_name_desc"));
+				map.put("price", "￥" + productJsonObject.get("price"));
+				map.put("image", productJsonObject.get("small_image"));
 				
-				list.add(map);
+				productsList.add(map);
+			}
+			//过滤属性列表
+			JSONArray attributesJsonArray = jsonObject.getJSONArray("attributes");
+			attributesList= new ArrayList<Map<String, Object>>();
+			for (int i = 0; i < attributesJsonArray.length(); i++) {
+				JSONObject attribute = attributesJsonArray.getJSONObject(i);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("key", attribute.getString("key"));//属性名,例如品牌，价格
+				map.put("filter_char", attribute.getString("filter_char"));
+				map.put("active_count", attribute.getString("active_count"));
+				JSONArray values = attribute.getJSONArray("value");
+				List<Map<String, String>> valueList = new ArrayList<Map<String,String>>();
+				for (int j = 0; j < values.length(); j++) {
+					Map<String, String> valueMap = new HashMap<String, String>();
+					if (values.getJSONObject(i).getInt("id") == -1) {//全部
+						continue;
+					}
+					valueMap.put("id", values.getJSONObject(i).getString("id"));
+					valueMap.put("option_value", values.getJSONObject(i).getString("option_value"));
+					valueMap.put("url", values.getJSONObject(i).getString("url"));//sort-886-1-2
+					valueMap.put("is_active", values.getJSONObject(i).getString("is_active"));
+					valueMap.put("active_index", values.getJSONObject(i).getString("active_index"));
+					valueMap.put("url_position", values.getJSONObject(i).getString("url_position"));
+					valueList.add(valueMap);
+				}
+				map.put("value", valueList);
+				attributesList.add(map);
 			}
 		}catch (JSONException e) {
 			// TODO: handle exception
 		}
-	    
-		
-		
-		return list;
+		return productsList;
 	}
 
-	/**
-	 * 点击排序
-	 */
+	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		String url = v.getTag().toString();
-		Intent intent = new Intent(this, ProductsListActivity.class);
-		intent.putExtra("url", url);
-		startActivity(intent);
+		//过滤按钮
+		if (v.getId() == R.id.product_list_filter) {
+			Log.d(TAG, attributesList.toString());
+			if (attributesList == null) {
+				return;
+			}
+			//TODO 展示过滤属性
+			
+		}else if (v.getId() == R.id.product_list_back) {//后退
+			finish();
+		}else{//排序
+			String url = v.getTag().toString();
+			Intent intent = new Intent(this, ProductsListActivity.class);
+			intent.putExtra("url", url);
+			startActivity(intent);
+		}
 	}
 
 }

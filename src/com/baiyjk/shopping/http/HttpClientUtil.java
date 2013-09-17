@@ -38,6 +38,8 @@ import org.apache.http.util.EntityUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class HttpClientUtil implements HttpApi {
@@ -68,6 +70,10 @@ public class HttpClientUtil implements HttpApi {
 
 	@Override
 	public String getRequest(String strUrl, Context context) {
+		boolean networkAvailable = canConnectInternet(context);
+		if (!networkAvailable) {
+			return "{\"networkAvailable\":false}";
+		}
 		strUrl = host + strUrl;
 		Log.d("Http Get", strUrl);
 		String responseStr = null;// 发送请求，得到响应
@@ -123,6 +129,10 @@ public class HttpClientUtil implements HttpApi {
 	}
 	
 	public String post(String url, Context context, List <NameValuePair> params){
+		boolean networkAvailable = canConnectInternet(context);
+		if (!networkAvailable) {
+			return "{\"networkAvailable\":false}";
+		}
 		url = host + url;
 		Log.d("Http Post", url);
 		String responseStr = null;// 发送请求，得到响应
@@ -296,6 +306,15 @@ public class HttpClientUtil implements HttpApi {
 		if (httpclient != null) {
 			httpclient.getConnectionManager().shutdown();
 		}
+	}
+	
+	private boolean canConnectInternet(Context context){
+		ConnectivityManager conManager=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE );
+        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
+        if (networkInfo != null ){ // 注意，这个判断一定要的哦，要不然会出错
+                  return networkInfo.isAvailable();
+        }
+        return false ;
 	}
 
 }

@@ -18,12 +18,14 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.ContactsContract.CommonDataKinds.Identity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +34,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.baiyjk.shopping.R;
@@ -196,6 +199,22 @@ public class CartListSimpleAdapter extends SimpleAdapter {
 							
 						}
 					});
+					/**
+					 * 弹出键盘的Done按钮摁下
+					 */
+//					qtyEditText.setOnEditorActionListener(new OnEditorActionListener(){
+//
+//						@Override
+//						public boolean onEditorAction(TextView v, int actionId,
+//								KeyEvent event) {
+//							boolean handled = false;
+//					        if (actionId == EditorInfo.IME_ACTION_DONE) {
+////					            sendMessage();
+//					            handled = true;
+//					        }
+//					        return handled;
+//						}});
+					
 					new AlertDialog.Builder(context)
 						.setTitle("修改购买数量").setView(layout)
 						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
