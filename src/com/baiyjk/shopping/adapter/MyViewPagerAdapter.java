@@ -3,9 +3,16 @@ package com.baiyjk.shopping.adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.baiyjk.shopping.ActpageActivity;
 import com.baiyjk.shopping.ViewPagerHomeAdsItem;
+import com.baiyjk.shopping.utils.ImageLoader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -22,13 +29,15 @@ import android.widget.ImageView;
 public class MyViewPagerAdapter extends PagerAdapter{
 
     private Context mContext;  
-    private ArrayList<ImageView> images; 
-    private HashMap<Integer, ViewPagerHomeAdsItem> mHashMap;  
+    private ArrayList<JSONObject> images;
+//    private String mTop3ActpageInfo;
+//    private HashMap<Integer, ViewPagerHomeAdsItem> mHashMap;  
       
-    public MyViewPagerAdapter(Context context, ArrayList<ImageView> images) {  
+    public MyViewPagerAdapter(Context context, ArrayList<JSONObject> images) {  
         this.mContext = context;  
         this.images = images;
-        mHashMap = new HashMap<Integer, ViewPagerHomeAdsItem>();
+//        mTop3ActpageInfo = top3ActpageInfo;
+//        mHashMap = new HashMap<Integer, ViewPagerHomeAdsItem>();
     }   
     
 	@Override
@@ -44,23 +53,36 @@ public class MyViewPagerAdapter extends PagerAdapter{
 	}
 	@Override  
     public void destroyItem(ViewGroup container, int position, Object object) {  
-		container.removeView(images.get(position)); 
+		container.removeView(container.getChildAt(position)); 
     } 
 	
     @Override 
     public Object instantiateItem(ViewGroup container, int position){
-    		ImageView view = images.get(position);
-    		view.setOnClickListener(new OnClickListener(){
-
+    	ImageLoader imageLoader = new ImageLoader(mContext);
+    	ImageView imageView = new ImageView(mContext);
+    	try {
+			imageLoader.DisplayImage(images.get(position).getString("imageLink"), imageView);
+			imageView.setTag(images.get(position).getString("imageUrl"));
+			imageView.setOnClickListener(new OnClickListener() {
+				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					Log.e("ads click", "ads click+");
-					
-				}});
-    		container.addView(view);
+					Intent intent = new Intent();
+					intent.setClass(mContext, ActpageActivity.class);
+					intent.putExtra("url", v.getTag().toString());
+					mContext.startActivity(intent);
+				}
+			});
+//		    	imageView.setBackground(background);
+//			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	container.addView(imageView);
     		
-    		return images.get(position);
+    	return container.getChildAt(position);
     }
 
 }

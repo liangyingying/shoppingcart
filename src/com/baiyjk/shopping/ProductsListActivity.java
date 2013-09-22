@@ -186,6 +186,7 @@ public class ProductsListActivity extends ListActivity implements OnScrollListen
 			JSONObject jsonObject = new JSONObject(responseJsonString);
 			JSONArray productsJsonArray = jsonObject.getJSONArray("products");
 			
+			//设置排序URL和翻页URL
 			nextPage = jsonObject.getString("nextPage");
 			priceSort.setTag(jsonObject.getString("priceSortUrl"));
 			salesSort.setTag(jsonObject.getString("salesSortUrl"));
