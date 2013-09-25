@@ -9,6 +9,7 @@ import com.baiyjk.shopping.ProductsListActivity;
 import com.baiyjk.shopping.R;
 import com.baiyjk.shopping.CategoryActivity.SlideMenu;
 import com.baiyjk.shopping.MyRelativeLayout.OnScrollListener;
+import com.baiyjk.shopping.CategoryLevel3Activity;
 import com.baiyjk.shopping.model.Category;
 import com.baiyjk.shopping.sqlite.CategoryDbManager;
 
@@ -153,19 +154,23 @@ public class CategoryFragment extends Fragment implements OnGestureListener,
                 onRelease(); 
             }  
         });
-	    //第二级分类点击启动商品列表页
+	    //第二级分类点击启动第三级分类Activity
 	    listView2.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int position,
 					long arg3) {
-				Intent intent = new Intent(mContext, ProductsListActivity.class);
-				
+//				Intent intent = new Intent(mContext, ProductsListActivity.class);
+				Intent intent = new Intent(mContext, CategoryLevel3Activity.class);
 				String id = ((TextView)v.findViewById(R.id.level2_item_id)).getText().toString();
-				String displayId = ((TextView)v.findViewById(R.id.level2_item_display_id)).getText().toString();
-				String url = getUrl(id, displayId);
-				Log.d("商品列表页", url);
-				intent.putExtra("url", url);
+//				String displayId = ((TextView)v.findViewById(R.id.level2_item_display_id)).getText().toString();
+//				String url = getUrl(id, displayId);
+//				Log.d("商品列表页", url);
+//				intent.putExtra("url", url);
+				
+				String name = ((TextView)v.findViewById(R.id.level2_item_name)).getText().toString();
+				intent.putExtra("categoryId", id);
+				intent.putExtra("categoryName", name);
 				startActivity(intent);
 				
 			}
