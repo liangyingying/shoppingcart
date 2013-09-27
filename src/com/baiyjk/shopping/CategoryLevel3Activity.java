@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -42,13 +44,23 @@ public class CategoryLevel3Activity extends ListActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.category_level2_listitem);
+		setContentView(R.layout.category_level3);
 		
 		this.mContext = this;
 		Intent intent = getIntent();
 		this.categoryId = intent.getStringExtra("categoryId");
 		this.categoryName = intent.getStringExtra("categoryName");
 		
+		//后退
+		ImageView backView = (ImageView)findViewById(R.id.category_level3_back);
+		backView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+				
+			}
+		});
 		
 		TextView titlebar = (TextView)findViewById(R.id.category_level3_titlebar);
 		titlebar.setText(this.categoryName);

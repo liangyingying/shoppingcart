@@ -120,7 +120,8 @@ public class HttpClientUtil implements HttpApi {
 //			Log.e(DEBUG_TAG, e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
-			Log.e(DEBUG_TAG, e.getMessage());
+//			Log.e(DEBUG_TAG, e.getMessage());
+			e.printStackTrace();
 //			Log.e(DEBUG_TAG, e.toString());
 		} finally {
 			abortConnection(httpGet, httpClient);

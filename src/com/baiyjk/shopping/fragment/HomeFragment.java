@@ -58,7 +58,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_home, container, false);
-        
         //搜索输入框，/search.do?keyword=**&sort=*&page=*
   		//TODO 部分手机不支持imeOptions,So,还需要添加按钮！
   		searchEditText = (EditText)v.findViewById(R.id.keyword);
@@ -84,21 +83,19 @@ public class HomeFragment extends Fragment {
 //				R.drawable.viewpager_3
 //		};
         this.images = new ArrayList<JSONObject>();
-//		this.images = new ArrayList<ImageView>();
 		this.dots = new ArrayList<View>();
-		String top3ActpageUrl = "/top3Actpage?format=true";
-		String top3ActpageInfo = HttpFactory.getHttp().getRequest(top3ActpageUrl, v.getContext());
-		try {
-			JSONArray jsonArray = new JSONArray(top3ActpageInfo);
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				
-				this.images.add(jsonObject);
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		String top3ActpageUrl = "/top3Actpage?format=true";
+//		String top3ActpageInfo = HttpFactory.getHttp().getRequest(top3ActpageUrl, v.getContext());
+//		try {
+//			JSONArray jsonArray = new JSONArray(top3ActpageInfo);
+//			for (int i = 0; i < jsonArray.length(); i++) {
+//				JSONObject jsonObject = jsonArray.getJSONObject(i);
+//				
+//				this.images.add(jsonObject);
+//			}
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
 		
 		this.dots.add(v.findViewById(R.id.dot_0));
 		this.dots.add(v.findViewById(R.id.dot_1));

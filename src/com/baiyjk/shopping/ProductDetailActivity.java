@@ -27,22 +27,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baiyjk.shopping.R.id;
 import com.baiyjk.shopping.adapter.ProductDetaiViewPagerAdapter;
 import com.baiyjk.shopping.http.HttpFactory;
 import com.baiyjk.shopping.model.Cart;
 import com.baiyjk.shopping.sqlite.MySqLiteHelper;
 
-public class ProductDetailActivity extends Activity implements OnClickListener{
+public class ProductDetailActivity extends Activity{
 	private String productUrl;
 	private String productDetailJson;
 	private final String TAG = "product detail page";
 	private TextView titleTextView;
 	private TextView nameTextView;
-	private TextView descTextView;
+	private TextView nameDescTextView;
 	private TextView priceTextView;
 	private Button addToCartButton;
 	private Button addToWishButton;
@@ -60,11 +62,19 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
 	private JSONObject retJsonObject;//加入购物车response
 	private final int MSG_SUCCESS = 1;
 	private final int MSG_FAILURE = 0;
-	private Button backButton;
-	private Button cartButton;
+	private ImageView backImage;
+	private ImageView cartImage;
 	private TextView marketpriceTextView;
 	private View infoView;
 	private View commentsView;
+	private TextView brandView;
+	private TextView specView;
+	private TextView manufacturerView;
+	private TextView medicinetypeView;
+	private TextView prodcodeView;
+	private TextView unitView;
+	private TextView newfromdateView;
+	private TextView descTextView;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -95,30 +105,38 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
 		dotContainer = (LinearLayout)findViewById(R.id.product_image_dot_container);
 		dot = (View)findViewById(R.id.dot);
 		
-		cartButton = (Button)findViewById(R.id.product_detail_cart);
+		cartImage = (ImageView)findViewById(R.id.product_detail_cart);
 		titleTextView = (TextView)findViewById(R.id.product_detail_titlebar);
 		
 		nameTextView = (TextView)findViewById(R.id.product_detail_name);
+		nameDescTextView = (TextView)findViewById(R.id.product_detail_name_desc);
 		descTextView = (TextView)findViewById(R.id.product_detail_desc);
 		priceTextView = (TextView)findViewById(R.id.product_detail_price);
 		marketpriceTextView = (TextView)findViewById(R.id.product_detail_market_price);
-		marketpriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );//加中划线
-		infoView = findViewById(R.id.product_detail_info);//查看商品详情
-		commentsView = findViewById(R.id.product_detail_comments);//查看用户评价
+		brandView = (TextView)findViewById(R.id.product_detail_brand);
+		specView = (TextView)findViewById(R.id.product_detail_spec);
+		manufacturerView = (TextView)findViewById(R.id.product_detail_manufacturer);
+		medicinetypeView = (TextView)findViewById(R.id.product_detail_medicinetype);
+		prodcodeView = (TextView)findViewById(R.id.product_detail_prodcode);
+		unitView = (TextView)findViewById(R.id.product_detail_unit);
+//		newfromdateView = (TextView)findViewById(R.id.product_detail_newfromdate);
+		
+//		infoView = findViewById(R.id.product_detail_info);//查看商品详情
+//		commentsView = findViewById(R.id.product_detail_comments);//查看用户评价
 		
 		addToCartButton = (Button)findViewById(R.id.add_to_cart);
-		addToWishButton = (Button)findViewById(R.id.add_to_wish);
-		shareButton = (Button)findViewById(R.id.product_detail_share);
-		backButton = (Button)findViewById(R.id.product_detail_back);
+//		addToWishButton = (Button)findViewById(R.id.add_to_wish);
+//		shareButton = (Button)findViewById(R.id.product_detail_share);
+		backImage = (ImageView)findViewById(R.id.product_detail_back);
 		
-		backButton.setOnClickListener(new OnClickListener() {			
+		backImage.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
 		//查看购物车 
-		cartButton.setOnClickListener(new OnClickListener() {			
+		cartImage.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -130,8 +148,8 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
 		
 		myCartNumber = (TextView)findViewById(R.id.product_detail_cart_number);
 		//头部显示购物车商品数量。如果是已登录用户，更新UserId；
-		myCart = new Cart(userId);
-		myCart.setDbHelper(new MySqLiteHelper(mContext));
+//		myCart = new Cart(userId);
+//		myCart.setDbHelper(new MySqLiteHelper(mContext));
 //		int size = myCart.getCartSize(userId);
 //		if (size > 0)
 //			myCartNumber.setText("" + size);
@@ -161,8 +179,20 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
 								jsonObject = new JSONObject(productDetailJson);
 								titleTextView.setText(jsonObject.get("name").toString());
 								nameTextView.setText(jsonObject.get("name").toString());
-								descTextView.setText(jsonObject.get("name_desc").toString());
+								nameDescTextView.setText(jsonObject.get("name_desc").toString());
+								descTextView.setText(jsonObject.getString("short_description"));
+								
 								priceTextView.setText(jsonObject.get("price").toString());
+								marketpriceTextView.setText(jsonObject.getString("market_price"));
+								marketpriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );//加中划线
+								brandView.setText(jsonObject.getString("brand_name"));
+								specView.setText(jsonObject.getString("spec"));
+								unitView.setText(jsonObject.getString("unit"));
+								manufacturerView.setText(jsonObject.getString("manufacturer"));
+								medicinetypeView.setText(jsonObject.getString("medicinetype"));
+								prodcodeView.setText(jsonObject.getString("prod_code"));
+								
+								
 								//获取商品的多张图片URL；
 								JSONArray allImages = new JSONArray(jsonObject.get("allImageUrl").toString());
 								ArrayList<String> allImagesUrl = new ArrayList<String>();
@@ -352,7 +382,7 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
         }  
     };
 
-	@SuppressLint("NewApi")
+	/*@SuppressLint("NewApi")
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.product_detail_comments) {
@@ -362,7 +392,7 @@ public class ProductDetailActivity extends Activity implements OnClickListener{
 			startActivity(intent);
 		}
 		
-	}
+	}*/
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

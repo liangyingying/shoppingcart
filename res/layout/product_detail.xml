@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,7 +14,7 @@
         android:layout_height="50dp"
         android:background="#2F7D6D" >
 
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/product_detail_back"
@@ -33,7 +36,7 @@
             android:maxLength="6"
             android:ellipsize="end"/> 
 
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -98,10 +101,15 @@
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
+	    android:id="@+id/product_detail_name_desc"
+	    android:layout_margin="4dp"
+	    android:textSize="12sp"/>
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
 	    android:id="@+id/product_detail_desc"
 	    android:layout_margin="4dp"
 	    android:textSize="12sp"/>
-	
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content" 
@@ -134,8 +142,121 @@
 	        android:textColor="#FF0000"/>
 
 	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="品牌:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_brand"/>
+
+	</LinearLayout>
 	
-	<RelativeLayout
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="规格:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_spec"/>
+
+	</LinearLayout>
+	<!-- <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="上架时间:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_newfromdate"
+	        android:textColor="#FF0000"/>
+
+	</LinearLayout> -->
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="单位:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_unit"/>
+
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="生产企业:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_manufacturer"/>
+
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="剂型:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_medicinetype"/>
+
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	    android:orientation="horizontal"
+	    android:layout_margin="4dp">
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="批准文号:"/>
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/product_detail_prodcode"/>
+
+	</LinearLayout>
+	<!-- <RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:id="@+id/product_detail_info"
@@ -169,7 +290,7 @@
 	        android:layout_alignParentRight="true"
 	        android:src="@drawable/back"/>
 
-	</RelativeLayout>
+	</RelativeLayout> -->
 	<!-- 加入购物车、 收藏、 分享 -->
 
 	<LinearLayout
@@ -181,9 +302,10 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/add_to_cart"
+		    android:layout_alignParentRight="true"
 		    android:text="放入购物车" />
 	
-		<Button
+		<!-- <Button
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/add_to_wish"
@@ -193,7 +315,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/product_detail_share"
-		    android:text="分享"/>
+		    android:text="分享"/> -->
 
 		
 	</LinearLayout>
@@ -211,3 +333,4 @@
 		    android:layout_height="wrap_content"/>
 	</RelativeLayout> -->
 </LinearLayout>
+</ScrollView>
